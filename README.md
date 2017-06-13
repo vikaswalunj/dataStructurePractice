@@ -1,2 +1,2 @@
 # dataStructurePractice
-practice data structure 
+This is just practice folder for dataStructure 

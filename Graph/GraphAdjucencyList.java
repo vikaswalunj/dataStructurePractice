@@ -9,11 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import ds.Graph.Graph.Edge;
+import ds.Graph.Graph.UDEdge;
+
 public class GraphAdjucencyList {
 
 	//define map which will have list for all vertices where vertex is key. Vertex can be of any type 
 	//here we have defined it as integer but it can be of type T
 	private Map<Integer, List<Integer>> adjList;
+	
+	private Map<UDEdge, List<UDEdge>> udEdgeList;
 	
 	//create graph for V no of vertices
 	public GraphAdjucencyList (int v){
@@ -342,4 +347,157 @@ public class GraphAdjucencyList {
 	 
 	    return leaves;
 	}
+	/*****************************BackTracking Problems **************************************/
+	/* find if there is path of more than k length(weight) from source
+	 */
+	Boolean visited[] = new Boolean[udEdgeList.size()];
+	//v - source vertex, k - total weight to be checked
+	public boolean isPathGreaterThanK(int src, int k, Boolean [] visited){
+		
+		//mark source as visited
+		visited[src] = true;
+		
+		Iterator<UDEdge> list = udEdgeList.get(src).listIterator();
+		
+		while (list.hasNext()) {
+			UDEdge e = list.next();
+			
+			int v = e.ver;
+			int w = e.weight;
+			//if vertex is already there then there is cycle and we ignore that
+			if (visited[v])
+				continue;
+			
+			//if current weight is more than k return true
+			if (w>k)
+				return true;
+			
+			//else add this vertex to visited
+			visited[v] = true;
+			
+			//call same function in recursion and check if this vertex can provide path > k
+			if (isPathGreaterThanK(v, k, visited))
+				return true;
+			
+			//backtrack
+			visited[v] = false;
+		}
+		
+		//if no adjacent could provide path return false
+		return false;
+		
+	}
+	
+	/* Tug of war 
+	 * 
+	 */
+	
+	// function that tries every possible solution by calling itself recursively
+	void TOWUtil(int arr[], int n, boolean curr_elements[], int no_of_selected_elements,
+	             boolean soln[], int min_diff, int sum, int curr_sum, int curr_position)
+	{
+	    // checks whether the it is going out of bound
+	    if (curr_position == n)
+	        return;
+	 
+	    // checks that the numbers of elements left are not less than the
+	    // number of elements required to form the solution
+	    if ((n/2 - no_of_selected_elements) > (n - curr_position))
+	        return;
+	 
+	    // consider the cases when current element is not included in the solution
+	    TOWUtil(arr, n, curr_elements, no_of_selected_elements,
+	              soln, min_diff, sum, curr_sum, curr_position+1);
+	 
+	    // add the current element to the solution
+	    no_of_selected_elements++;
+	    curr_sum = curr_sum + arr[curr_position];
+	    curr_elements[curr_position] = true;
+	 
+	    // checks if a solution is formed
+	    if (no_of_selected_elements == n/2)
+	    {
+	        // checks if the solution formed is better than the best solution so far
+	        if (Math.abs(sum/2 - curr_sum) < min_diff)
+	        {
+	            min_diff = Math.abs(sum/2 - curr_sum);
+	            for (int i = 0; i<n; i++)
+	                soln[i] = curr_elements[i];
+	        }
+	    }
+	    else
+	    {
+	        // consider the cases where current element is included in the solution
+	        TOWUtil(arr, n, curr_elements, no_of_selected_elements, soln,
+	                  min_diff, sum, curr_sum, curr_position+1);
+	    }
+	 
+	    // removes current element before returning to the caller of this function
+	    curr_elements[curr_position] = false;
+	}
+	 
+	// main function that generate an arr
+	void tugOfWar(int arr[], int n)
+	{
+	    // the boolen array that contains the inclusion and exclusion of an element
+	    // in current set. The number excluded automatically form the other set
+	    boolean curr_elements[] = new boolean[n];
+	 
+	    // The inclusion/exclusion array for final solution
+	    boolean soln[] = new boolean[n];
+	 
+	    int min_diff = Integer.MAX_VALUE;
+	 
+	    int sum = 0;
+	    for (int i=0; i<n; i++)
+	    {
+	        sum += arr[i];
+	        curr_elements[i] =  soln[i] = false;
+	    }
+	 
+	    // Find the solution using recursive function TOWUtil()
+	    TOWUtil(arr, n, curr_elements, 0, soln, min_diff, sum, 0, 0);
+	 
+	    // Print the solution
+	    System.out.println( "The first subset is: ");
+	    for (int i=0; i<n; i++)
+	    {
+	        if (soln[i] == true)
+	        	System.out.println( arr[i] +" ");
+	    }
+	    System.out.println("\nThe second subset is: ");
+	    for (int i=0; i<n; i++)
+	    {
+	        if (soln[i] == false)
+	        	System.out.println(arr[i] + " ");
+	    }
+	}
+	
+	/* Rat n Maze problem  */
+	//we need to write one more function which will create sol[][] array same size of maze and call this utility
+	//function in for loop for x and y 
+	public boolean solveMazeUtil(int maze[][], int x, int y, int sol[][]){
+		//if x and y are at destination return true
+		if ((x == maze.length-1) && (y == maze.length-1)) {
+			sol[x][y] = 1;
+			return true;
+		}
+		// here we can add one more condition to check if x and y are not out of bound only then proceed further else return false
+		//mark x and y as part of solution path
+		sol[x][y] = 1;
+		
+		//move forward with x direction
+		if (solveMazeUtil(maze, x+1, y, sol))
+			return true;
+		
+		//if solution is not found in x direction move down in y direction 
+		if (solveMazeUtil(maze, x, y+1, sol))
+			return true;
+		
+		//if none of the above movements worked then un mark x, y from path of solution (backtrack)
+		sol[x][y] = 0;
+		return false;
+		
+	}
+	 
 }

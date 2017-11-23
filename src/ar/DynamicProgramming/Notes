@@ -1,0 +1,6 @@
+Two properties of problem denote that this can be solved using dynamic programming
+1) Overlapping SubProblems
+	- two different ways of storig values
+		1) Memoization (Top Down)
+		2) Tabulation (Bottom Up)
+2) optimal substructure

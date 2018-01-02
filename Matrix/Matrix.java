@@ -231,7 +231,7 @@ public class Matrix {
 	}
 	
 	/*
-	 * Count no of rectagles in given matrix when rectangle is represented by 'X' and atleast one line 
+	 * Count no of rectangles in given matrix when rectangle is represented by 'X' and atleast one line 
 	 * should have only 'O'
 	 */
 	
@@ -550,7 +550,7 @@ public class Matrix {
 					if (column[i]==0)
 						return -1;
 					
-					column[i] -= 1; //decrease cureent index by 1
+					column[i] -= 1; //decrease current index by 1
 				}
 				else 
 					count++;
@@ -564,6 +564,7 @@ public class Matrix {
 		return -1;
 	}
 	
+		
 	/* No of paths with exactly k coins
 	 * (0,0) -> (m,n)
 	 * recursive function -> time complexity is exponential
@@ -629,7 +630,7 @@ public class Matrix {
 		if (tlr<0 || tlr>row || tlc<0 || tlc>col || rbr<0 || rbr>row || rbc<0 || rbc>col)
 			return 0; 
 		
-		//intereate through matrix in given sub matrix and add elements one by one
+		//itereate through matrix in given sub matrix and add elements one by one
 		for (int R = tlr ; R<=rbr; R++) {
 			for (int C = tlc; C <= rbc; C++) {
 				sum += mat[R][C];
@@ -639,7 +640,7 @@ public class Matrix {
 		return sum;
 	}
 	
-	// Function to preprcess input mat[M][N].  This function
+	// Function to pre-process input mat[M][N].  This function
 	// mainly fills aux[M][N] such that aux[i][j] stores sum
 	// of elements from (0,0) to (i,j)
 	public void preProcess(int mat[][], int aux[][])
@@ -994,26 +995,41 @@ public class Matrix {
 		
 		int N = mat.length;
 		//consider all squares one by one
-		for (int x=0; x<N/2; x++) {
+		for (int r=0; r<N/2; r++) {
 			//consider elements in group of 4 in current square
-			for (int y=x; y<N-x-1; y++) {
+			for (int c=r; c<N-r-1; c++) {
 				//store current cell in temp variable
-				int temp = mat[x][y];
+				int temp = mat[r][c];
 				//move values from right to top
-				mat[x][y] = mat[y][N-1-x];
+				mat[r][c] = mat[c][N-1-r];
 				//move values from bottom to right
-				mat[y][N-1-x] = mat[N-1-x][N-1-y];
+				mat[c][N-1-r] = mat[N-1-r][N-1-c];
 				//move values from left to bottom
-				mat[N-1-x][N-1-y] = mat[N-1-y][x];
+				mat[N-1-r][N-1-c] = mat[N-1-c][r];
 				//assign temp to left
-				mat[N-1-y][x] = temp;
+				mat[N-1-c][r] = temp;
 			}
 		}
 	}
 	
 	/* Rotate matrix in clockwise direction*/
 	
-	// A function to rotate a matrix mat[][] of size R x C.
+	/* similar logic as anti clockwise  */
+	
+	public void rotateClockWise(int[][] matrix) {
+		int n = matrix.length;
+		for (int i = 0; i < n / 2; i++) {
+			for (int j = 0; j < Math.ceil(((double) n) / 2.); j++) {
+				int temp = matrix[i][j];
+				matrix[i][j] = matrix[n-1-j][i];
+				matrix[n-1-j][i] = matrix[n-1-i][n-1-j];
+				matrix[n-1-i][n-1-j] = matrix[j][n-1-i];
+				matrix[j][n-1-i] = temp;
+			}
+		}
+	}
+	
+	// another way to rotate clockwise. A function to rotate a matrix mat[][] of size R x C.
 	// Initially, m = R and n = C
 	void rotateMatrixclockwise(int m, int n, int mat[][])
 	{
@@ -1089,5 +1105,49 @@ public class Matrix {
 	    }
 	}
 	 
+	/* Word search - Given 2D board and word find if word exist in grid
+	 * The word can be constructed from letters of sequentially adjacent cell, 
+	 * where "adjacent" cells are those horizontally or vertically neighboring
+	 */
 	
+	public boolean exist(char[][] board, String word) {
+	    int m = board.length;
+	    int n = board[0].length;
+	 
+	    boolean result = false;
+	    for(int i=0; i<m; i++){
+	        for(int j=0; j<n; j++){
+	           if(dfs(board,word,i,j,0)){
+	               result = true;
+	           }
+	        }
+	    }
+	 
+	    return result;
+	}
+	 
+	public boolean dfs(char[][] board, String word, int i, int j, int k){
+	    int m = board.length;
+	    int n = board[0].length;
+	 
+	    if(i<0 || j<0 || i>=m || j>=n){
+	        return false;
+	    }
+	 
+	    if(board[i][j] == word.charAt(k)){
+	        char temp = board[i][j];
+	        board[i][j]='#';
+	        if(k==word.length()-1){
+	            return true;
+	        }else if(dfs(board, word, i-1, j, k+1)
+	        ||dfs(board, word, i+1, j, k+1)
+	        ||dfs(board, word, i, j-1, k+1)
+	        ||dfs(board, word, i, j+1, k+1)){
+	            return true;
+	        }
+	        board[i][j]=temp;
+	    }
+	 
+	    return false;
+	}
 }

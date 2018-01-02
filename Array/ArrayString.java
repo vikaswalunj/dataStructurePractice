@@ -52,6 +52,93 @@ public class ArrayString {
 	}
 	
 	/*
+	 * reverse integer. O(n)
+	 * test cases -123 -> -321, 123 -> 321, 120 -> 21, 
+	 */
+	
+	public int reverseInt(int x) {
+        
+        int y=0;
+        int carry = Math.abs(x);
+        while (carry > 0 ){
+           y =  (y * 10) + (carry % 10);         
+           carry = carry / 10; 
+        }
+        
+        if (x<0)
+        	return -y;
+        else 
+        	return y;
+    }
+	
+	/* remove duplicates from sorted array */
+	
+	public int removeDuplicates(int[] nums) {
+	    if (nums.length == 0) return 0;
+	    int i = 0;
+	    for (int j = 1; j < nums.length; j++) {
+	        if (nums[j] != nums[i]) {
+	            i++;
+	            nums[i] = nums[j];
+	        }
+	    }
+	    /* if you want to return modified array then copy it in another
+	     * int[] B = Arrays.copyOf(A, i + 1); return B;
+	     */
+	    return i + 1;
+	}
+	
+	/* Remove duplicates from sorted array when duplicates are allowed at the most twice
+	 * e.g. A = [1,1,1,2,2,3] your function should return length = 5, and A is now [1,1,2,2,3].
+	 */
+	public int removeDuplicatesAllowTwice(int[] A) {
+		if (A.length <= 2)
+			return A.length;
+ 
+		int prev = 1; // point to previous
+		int curr = 2; // point to current
+ 
+		while (curr < A.length) {
+			if (A[curr] == A[prev] && A[curr] == A[prev - 1]) {
+				curr++;
+			} else {
+				prev++;
+				A[prev] = A[curr];
+				curr++;
+			}
+		}
+ 
+		return prev + 1;
+	}
+	
+	/* Move zeros to end of array
+	 * This is best time complexity solution. 
+	 * Another way to make it less complex(but increase time complexity) is two while loops first will write non zero elements
+	 * in array at start of array. Then second loop will write 0's in rest of array (i<array.length()) 
+	 */
+	
+	public int[] moveZeroes(int[] nums) {
+	    int m=-1; 
+	 
+	    for(int i=0; i<nums.length; i++){
+	        if(nums[i]==0){
+	            if(m==-1 || nums[m]!=0){
+	                m=i;
+	            }
+	        }else{
+	            if(m!=-1){
+	                int temp = nums[i];
+	                nums[i]=nums[m];
+	                nums[m]=temp;
+	                m++;
+	            }
+	        }
+	    }
+	    return nums;
+	}
+	
+	
+	/*
 	 * evaluate reverse polish notation 
 	 * evaluate mathematical expression which contains operators(+,-,/,*) and operands (numbers)
 	 * ["2", "1", "+", "3", "*"] -> ((2 + 1) * 3) -> 9
@@ -125,6 +212,7 @@ public class ArrayString {
 	 * Word Ladder - find shortest transformation sequence from source/start word to target/end word
 	 * by going through words in dictionary. Changes between two words should be 1 char only
 	 * e.g. start = 'hot' end = 'cog' dictionary - ['cot', 'mot', 'dog', 'cog']
+	 * time complexity is O(n2m) - n square * m - m being length of string
 	 */
 	
 	public int shortestLengthChain(String source, String target, HashSet<String> dic){
@@ -170,6 +258,41 @@ public class ArrayString {
 			
 		}
 		return 0;
+	}
+	
+	/* find median of two sorted arrays
+	 * Time complexity is O(log(k))
+	 */
+	public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+	    int total = nums1.length+nums2.length;
+	    if(total%2==0){
+	        return (findKth(total/2+1, nums1, nums2, 0, 0)+findKth(total/2, nums1, nums2, 0, 0))/2.0;
+	    }else{
+	        return findKth(total/2+1, nums1, nums2, 0, 0);
+	    }
+	}
+	 
+	public int findKth(int k, int[] nums1, int[] nums2, int s1, int s2){
+	    if(s1>=nums1.length)
+	        return nums2[s2+k-1];
+	 
+	    if(s2>=nums2.length)
+	        return nums1[s1+k-1];
+	 
+	    if(k==1)
+	        return Math.min(nums1[s1], nums2[s2]);
+	 
+	    int m1 = s1+k/2-1;
+	    int m2 = s2+k/2-1;
+	 
+	    int mid1 = m1<nums1.length?nums1[m1]:Integer.MAX_VALUE;    
+	    int mid2 = m2<nums2.length?nums2[m2]:Integer.MAX_VALUE;
+	 
+	    if(mid1<mid2){
+	        return findKth(k-k/2, nums1, nums2, m1+1, s2);
+	    }else{
+	        return findKth(k-k/2, nums1, nums2, s1, m2+1);
+	    }
 	}
 	
 	/*Given an array of integers, find two numbers such that they add up to a specific target number.
@@ -778,6 +901,31 @@ public class ArrayString {
 		
 	}
 	
+	/* find majority element in non sorted map
+	 * linear O(n) 
+	 * Depends on definition of majority - is it > arr.length/2 or maximum occured element
+	 * for >arr.length/2 following answer is correct. for max occcured have max varaible maitained and compare char with it
+	 */
+	private static void findMajority(int[] arr) 
+    {
+        HashMap<Integer,Integer> map = new HashMap<Integer, Integer>();
+ 
+        for(int i = 0; i < arr.length; i++) {
+            if (map.containsKey(arr[i])) {
+                    int count = map.get(arr[i]) +1;
+                    if (count > arr.length /2) {
+                        System.out.println("Majority found :- " + arr[i]);
+                        return;
+                    } else
+                        map.put(arr[i], count);
+ 
+            }
+            else
+                map.put(arr[i],1);
+            }
+            System.out.println(" No Majority element");
+    }
+		
 	/*
 	 * find largest rectangle area in histogram where width is 1 for each strip and array of height is input
 	 * For example, given height = [2,1,5,6,2,3], return 10
@@ -815,6 +963,34 @@ public class ArrayString {
 		}
 	 
 		return max;
+	}
+	
+	/* Largest Number - 
+	 * given [3, 30, 34, 5, 9], the largest formed number is 9534330. 
+	 * (Note: The result may be very large, so you need to return a string instead of an integer.)
+	 */
+	
+	public String largestNumber(int[] nums) {
+	    String[] arr = new String[nums.length];
+	    for(int i=0; i<nums.length; i++){
+	        arr[i]=String.valueOf(nums[i]);
+	    }
+	 
+	    Arrays.sort(arr, new Comparator<String>(){
+	        public int compare(String a, String b){
+	            return (b+a).compareTo(a+b);
+	        }
+	    });
+	 
+	    StringBuilder sb = new StringBuilder();
+	    for(String s: arr){
+	        sb.append(s);
+	    }
+	 
+	    while(sb.charAt(0)=='0'&&sb.length()>1)
+	        sb.deleteCharAt(0);
+	 
+	    return sb.toString();
 	}
 	
 	/*
@@ -1431,6 +1607,32 @@ public class ArrayString {
         return;
     }
     
+    /*  Increasing Triplet Subsequence (very similar to above)
+     * Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.
+     * Given [1, 2, 3, 4, 5],return true. Given [5, 4, 3, 2, 1],return false.
+     */
+    
+    public boolean increasingTriplet(int[] nums) {
+    	int x = Integer.MAX_VALUE;
+    	int y = Integer.MAX_VALUE;
+     
+    	for (int i = 0; i < nums.length; i++) {
+    		int z = nums[i];
+     
+    		if (x >= z) {
+    			x = z;// update x to be a smaller value
+    		} else if (y >= z) {
+    			y = z; // update y to be a smaller value
+    		} else {
+    			return true;
+    		}
+    	}
+     
+    	return false;
+    }
+    
+    
+    
     /* Find minimum number of merge operations to make an array palindrome */
     
     // Returns minimum number of count operations
@@ -1610,7 +1812,75 @@ public class ArrayString {
 		 
 		 }
 		 
+		 /* amazon's question in Vikas's test
+		  * For given string and int k, find all distinct substrings of length k which has distinct k-1 characters in it. 
+		  */
 		 
+		 public List<String> getDistinctSubStrings(String str, int num){
+			 
+			 List<String> result = new ArrayList<String>();
+			 
+			 if (num < 2 
+				|| num > 26 
+				|| num > str.length()
+				|| str == null)
+				 return result;
+			
+			 for (int i=0; i<str.length()-num+1;i++){
+				 
+				 HashSet<Character> set = new HashSet<Character>();
+				 
+				 for (int j=i; j<=i+num-1; j++){
+					 set.add(str.charAt(j));
+					 
+					 if ((j==i+num-1) && (set.size() == num-1)){
+						 String s = str.substring(i, j+1);
+						 if (!result.contains(s))
+							 result.add(s);
+					 }
+				 }
+			 }
+			 return result;
+			 
+		 }
+		 
+		 /* amazon's question in Vikas's test
+		  * amazon video - each character scene
+		  */
+		 
+		 public List<Integer> lengtheachseen(List<Character> inputList){
+			
+			 List<Integer> result = new ArrayList<>();
+			 
+			 HashMap<Character, Integer> StartInd = new HashMap<Character, Integer>();
+			 HashMap<Character, Integer> EndInd = new HashMap<Character, Integer>();
+			 
+			 for (int i=0; i<inputList.size(); i++ ) {
+			     char c = inputList.get(i);
+				 if (StartInd.containsKey(c)){
+					 EndInd.put(c, i);
+				 } else {
+					 StartInd.put(c, i);
+					 EndInd.put(c, i);
+				 }
+			 }
+			 
+			 int actualEnd = 0;
+			 
+			 for (int j=0; j<inputList.size()-1; j=actualEnd+1){
+				 char ch = inputList.get(j); 
+				 actualEnd = EndInd.get(ch);
+				 
+				 for (int k=j;k<=actualEnd;k++){
+					 if (actualEnd < EndInd.get(inputList.get(k)))
+						 actualEnd = EndInd.get(inputList.get(k));
+				 }
+				 
+				 result.add(actualEnd-j+1);
+			 }
+			 
+			 return result;
+		 }
 		 
 		 /* Sort array based on count of occurrences in ascending order of number and descending order of frequency 
 		  *  e.g. input - {5,2,8,8,5,5,8,1,1,2} o/p - {5,5,5,8,8,8,1,1,2,2}
@@ -2168,6 +2438,643 @@ public class ArrayString {
 	        }
 	        return b;
 	    }
+	    
+	    /* rearrange positive negative numbers in o(n) and O(1)
+	     */
+	    
+	    // The main function that rearranges elements of given
+	    // array.  It puts positive elements at even indexes (0,
+	    // 2, ..) and negative numbers at odd indexes (1, 3, ..).
+	    static void rearrange2(int arr[], int n)
+	    {
+	        // The following few lines are similar to partition
+	        // process of QuickSort.  The idea is to consider 0
+	        // as pivot and divide the array around it.
+	        int i = -1, temp = 0;
+	        for (int j = 0; j < n; j++)
+	        {
+	            if (arr[j] < 0)
+	            {
+	                i++;
+	                temp = arr[i];
+	                arr[i] = arr[j];
+	                arr[j] = temp;
+	            }
+	        }
+	 
+	        // Now all positive numbers are at end and negative numbers at
+	        // the beginning of array. Initialize indexes for starting point
+	        // of positive and negative numbers to be swapped
+	        int pos = i+1, neg = 0;
+	 
+	        // Increment the negative index by 2 and positive index by 1, i.e.,
+	        // swap every alternate negative number with next positive number
+	        while (pos < n && neg < pos && arr[neg] < 0)
+	        {
+	            temp = arr[neg];
+	            arr[neg] = arr[pos];
+	            arr[pos] = temp;
+	            pos++;
+	            neg += 2;
+	        }
+	    }
+	    
+	    /*
+	     * sort array in wave form a[0] >= a[1] <= a[2] >= a[3] <= a[4] >= a[5] ....
+	     */
+	    // A utility method to swap two numbers.
+	    void swap(int arr[], int a, int b)
+	    {
+	        int temp = arr[a];
+	        arr[a] = arr[b];
+	        arr[b] = temp;
+	    }
+	    // This function sorts arr[0..n-1] in wave form, i.e.,
+	    // arr[0] >= arr[1] <= arr[2] >= arr[3] <= arr[4]....
+	    void sortInWave(int arr[], int n)
+	    {
+	        // Traverse all even elements
+	        for (int i = 0; i < n; i+=2)
+	        {
+	            // If current even element is smaller
+	            // than previous
+	            if (i>0 && arr[i-1] > arr[i] )
+	                swap(arr, i-1, i);
+	 
+	            // If current even element is smaller
+	            // than next
+	            if (i<n-1 && arr[i] < arr[i+1] )
+	                swap(arr, i, i + 1);
+	        }
+	    }
+	    
+	    
+	    /* Sort an array according to absolute difference with given value
+	     * Input : arr[] : x = 7, arr[] = {10, 5, 3, 9, 2}
+			Output : arr[] = {5, 9, 10, 3, 2}
+			Explanation:
+			7 - 10 = 3(abs), 7 - 5 = 2, 7 - 3 = 4, 7 - 9 = 2(abs), 7 - 2 = 5
+			The idea is to use a self balancing binary search tree. We traverse input array and for every 
+			element, we find its difference with x and store the difference as key and element as value in self 
+			balancing binary search tree. Finally we traverse the tree and print its in order traversal which is required output.
+	     	time complexity = O(nlogn)
+	     	space complexity = O(n)
+	     */
+	    
+	    // difference with x.
+	    void rearrange(int arr[], int n, int x)
+	    {
+	    	multimap<int, int> m;
+	  
+	    	// Store values in a map with the difference
+	    	// with X as key
+	    	for (int i = 0 ; i < n; i++)
+	    		m.insert(make_pair(abs(x-arr[i]),arr[i]));
+	  
+	    	// Update the values of array
+	    	int i = 0;
+	    	for (auto it = m.begin(); it != m.end(); it++)
+	    		arr[i++] = (*it).second ;
+	    }
+	    
+	    
+	    /* Returns the product of max product subarray.
+	       Assumes that the given array always has a subarray
+	       with product more than 1 */
+	    static int maxSubarrayProduct(int arr[])
+	    {
+	        int n = arr.length;
+	        // max positive product ending at the current position
+	        int max_ending_here = 1;
+	 
+	        // min negative product ending at the current position
+	        int min_ending_here = 1;
+	 
+	        // Initialize overall max product
+	        int max_so_far = 1;
+	 
+	        /* Traverse through the array. Following
+	           values are maintained after the ith iteration:
+	           max_ending_here is always 1 or some positive product
+	                           ending with arr[i]
+	           min_ending_here is always 1 or some negative product
+	                           ending with arr[i] */
+	        for (int i = 0; i < n; i++)
+	        {
+	            /* If this element is positive, update max_ending_here.
+	                Update min_ending_here only if min_ending_here is
+	                negative */
+	            if (arr[i] > 0)
+	            {
+	                max_ending_here = max_ending_here*arr[i];
+	                min_ending_here = min (min_ending_here * arr[i], 1);
+	            }
+	 
+	            /* If this element is 0, then the maximum product cannot
+	               end here, make both max_ending_here and min_ending
+	              _here 0
+	               Assumption: Output is alway greater than or equal to 1. */
+	            else if (arr[i] == 0)
+	            {
+	                max_ending_here = 1;
+	                min_ending_here = 1;
+	            }
+	 
+	            /* If element is negative. This is tricky
+	               max_ending_here can either be 1 or positive.
+	               min_ending_here can either be 1 or negative.
+	               next min_ending_here will always be prev.
+	               max_ending_here * arr[i]
+	               next max_ending_here will be 1 if prev
+	               min_ending_here is 1, otherwise
+	               next max_ending_here will be 
+	                           prev min_ending_here * arr[i] */
+	            else
+	            {
+	                int temp = max_ending_here;
+	                max_ending_here = max (min_ending_here * arr[i], 1);
+	                min_ending_here = temp * arr[i];
+	            }
+	 
+	            // update max_so_far, if needed
+	            if (max_so_far <  max_ending_here)
+	                max_so_far  =  max_ending_here;
+	        }
+	 
+	        return max_so_far;
+	    }
+	    
+	    /* Given a digit string, return all possible letter combinations that the number could represent. (Check out your cellphone to see the mappings) 
+	     * Input:Digit string "23", Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+	     */
+	    
+	    public List<String> letterCombinations(String digits) {
+	        HashMap<Character, char[]> map = new HashMap<Character, char[]>();
+	        map.put('2', new char[]{'a','b','c'});
+	        map.put('3', new char[]{'d','e','f'});
+	        map.put('4', new char[]{'g','h','i'});
+	        map.put('5', new char[]{'j','k','l'});
+	        map.put('6', new char[]{'m','n','o'});
+	        map.put('7', new char[]{'p','q','r','s'});
+	        map.put('8', new char[]{'t','u','v'});
+	        map.put('9', new char[]{'w','x','y','z'});
+	     
+	        List<String> result = new ArrayList<String>();
+	        if(digits.equals(""))
+	            return result;
+	     
+	        helper(result, new StringBuilder(), digits, 0, map);
+	     
+	        return result;
+	     
+	    }
+	     
+	    public void helper(List<String> result, StringBuilder sb, String digits, int index, HashMap<Character, char[]> map){
+	        if(index>=digits.length()){
+	            result.add(sb.toString());
+	            return;
+	        }
+	     
+	        char c = digits.charAt(index);
+	        char[] arr = map.get(c);
+	     
+	        for(int i=0; i<arr.length; i++){
+	            sb.append(arr[i]);
+	            helper(result, sb, digits, index+1, map);
+	            sb.deleteCharAt(sb.length()-1);
+	        }
+	    }
+	    
+	    
+	    /* First Missing Positive
+	     * Given an unsorted integer array, find the first missing positive integer. 
+	     * For example, given [1,2,0] return 3 and [3,4,-1,1] return 2.
+	     */
+	    
+	    public int firstMissingPositiveAnd0(int A[]) {
+	    	int n = A.length;
+	    	for (int i = 0; i < n; i++) {
+	    		// when the ith element is not i
+	    		while (A[i] != i) {
+	    			// no need to swap when ith element is out of range [0,n]
+	    			if (A[i] < 0 || A[i] >= n)
+	    				break;
+	     
+	    			//handle duplicate elements
+	    			if(A[i]==A[A[i]])
+	                        		break;
+	    			// swap elements
+	    			int temp = A[i];
+	    			A[i] = A[temp];
+	    			A[temp] = temp;
+	    		}
+	    	}
+	     
+	    	for (int i = 0; i < n; i++) {
+	    		if (A[i] != i)
+	    			return i;
+	    	}
+	     
+	    	return n;
+	    }
+	    
+	    /* multiply numbers given in string without converting them in interger or using BigInteger.
+	     * The key to solve this problem is multiplying each digit of the numbers at the corresponding positions and 
+	     * get the sum values at each position. That is how we do multiplication manually.
+	     */
+	    
+	    public String multiply(String num1, String num2) {
+	        String n1 = new StringBuilder(num1).reverse().toString();
+	        String n2 = new StringBuilder(num2).reverse().toString();
+	     
+	        int[] d = new int[num1.length()+num2.length()];
+	     
+	        //multiply each digit and sum at the corresponding positions
+	        for(int i=0; i<n1.length(); i++){
+	            for(int j=0; j<n2.length(); j++){
+	                d[i+j] += (n1.charAt(i)-'0') * (n2.charAt(j)-'0');
+	            }
+	        }
+	     
+	        StringBuilder sb = new StringBuilder();
+	     
+	        //calculate each digit
+	        for(int i=0; i<d.length; i++){
+	            int mod = d[i]%10;
+	            int carry = d[i]/10;
+	            if(i+1<d.length){
+	                d[i+1] += carry;
+	            }
+	            sb.insert(0, mod);
+	        }
+	     
+	        //remove front 0's
+	        while(sb.charAt(0) == '0' && sb.length()> 1){
+	            sb.deleteCharAt(0);
+	        }
+	     
+	        return sb.toString();
+	    }
+	    
+	    /* maximum sum subarray 
+	     *  [−2,1,−3,4,−1,2,1,−5,4], the contiguous subarray [4,−1,2,1] has the largest sum = 6.
+	     */
+	    
+	    public int maxSubArray(int[] A) {
+	        int newsum=A[0];
+	        int max=A[0];
+	        for(int i=1;i<A.length;i++){
+	            newsum=Math.max(newsum+A[i],A[i]);
+	            max= Math.max(max, newsum);
+	        }
+	        return max;
+	     }
+	    
+	    /* Text justification
+	     * 1. if a line has only one word and the word's length is less than max width, we need to fill the left part with spaces.
+			2. how to distribute extra spaces for each words when the number of spaces can not be evenly distributed to each word.
+	     */
+	    
+	    public List<String> fullJustify(String[] words, int maxWidth) {
+	        List<String> result = new ArrayList<String>();
+	     
+	        if(words==null || words.length==0){
+	            return result;
+	        }
+	     
+	     
+	        int count=0;
+	        int last=0;
+	        ArrayList<String> list = new ArrayList<String>();
+	        for(int i=0; i<words.length; i++){
+	            count = count + words[i].length();
+	     
+	            if(count+i-last>maxWidth){
+	                int wordsLen = count-words[i].length();
+	                int spaceLen = maxWidth-wordsLen;
+	                int eachLen = 1;
+	                int extraLen = 0;
+	     
+	                if(i-last-1>0){
+	                    eachLen = spaceLen/(i-last-1);
+	                    extraLen = spaceLen%(i-last-1);
+	                }
+	     
+	                StringBuilder sb = new StringBuilder();
+	     
+	                for(int k=last; k<i-1; k++){
+	                    sb.append(words[k]);
+	     
+	                    int ce = 0;
+	                    while(ce<eachLen){
+	                        sb.append(" ");
+	                        ce++;
+	                    }
+	     
+	                    if(extraLen>0){
+	                        sb.append(" ");
+	                        extraLen--;
+	                    }
+	                }
+	     
+	                sb.append(words[i-1]);//last words in the line
+	                //if only one word in this line, need to fill left with space
+	                while(sb.length()<maxWidth){
+	                    sb.append(" ");
+	                }
+	     
+	                result.add(sb.toString());
+	     
+	                last = i;
+	                count=words[i].length();
+	            }
+	        }
+	     
+	        int lastLen = 0;
+	        StringBuilder sb = new StringBuilder();
+	     
+	        for(int i=last; i<words.length-1; i++){
+	            count = count+words[i].length();
+	            sb.append(words[i]+" ");
+	        }
+	     
+	        sb.append(words[words.length-1]);
+	        int d=0;
+	        while(sb.length()<maxWidth){
+	            sb.append(" ");
+	        }
+	        result.add(sb.toString());
+	     
+	        return result;
+	    }
+	    
+	    /* squaretoot(x) - sqrt (x)
+	     *  sqrt(n+1) = (sqrt(n) + (num/sqrt(n)))/2
+	     */
+	    
+	    public static double sqrt(int number) {
+	    	double t;
+	     
+	    	double squareRoot = number / 2;
+	     
+	    	do {
+	    		t = squareRoot;
+	    		squareRoot = (t + (number / t)) / 2;
+	    	} while ((t - squareRoot) != 0);
+	     
+	    	return squareRoot;
+	    }
+	    
+	    /* Minimum window substring 
+	     * Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+	     * For example, S = "ADOBECODEBANC", T = "ABC", Minimum window is "BANC".
+	     */
+	    
+	    public String minWindow(String s, String t) {
+	        if(t.length()>s.length()) 
+	            return "";
+	        String result = "";
+	     
+	        //character counter for t
+	        HashMap<Character, Integer> target = new HashMap<Character, Integer>();
+	        for(int i=0; i<t.length(); i++){
+	            char c = t.charAt(i);    
+	            if(target.containsKey(c)){
+	                target.put(c,target.get(c)+1);
+	            }else{
+	                target.put(c,1);  
+	            }
+	        }
+	     
+	        // character counter for s
+	        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+	        int left = 0;
+	        int minLen = s.length()+1;
+	     
+	        int count = 0; // the total of mapped characters
+	     
+	        for(int i=0; i<s.length(); i++){
+	            char c = s.charAt(i);
+	     
+	            if(target.containsKey(c)){
+	                if(map.containsKey(c)){
+	                    if(map.get(c)<target.get(c)){
+	                        count++;
+	                    }
+	                    map.put(c,map.get(c)+1);
+	                }else{
+	                    map.put(c,1);
+	                    count++;
+	                }
+	            }
+	     
+	            if(count == t.length()){
+	                char sc = s.charAt(left);
+	                while (!map.containsKey(sc) || map.get(sc) > target.get(sc)) {
+	                    if (map.containsKey(sc) && map.get(sc) > target.get(sc))
+	                        map.put(sc, map.get(sc) - 1);
+	                    left++;
+	                    sc = s.charAt(left);
+	                }
+	     
+	                if (i - left + 1 < minLen) {
+	                    result = s.substring(left, i + 1);
+	                    minLen = i - left + 1;
+	                }
+	            }
+	        }
+	     
+	        return result;
+	    }
+	    
+	    /* Decode ways count - O(n)
+	     * Let 1 represent ‘A’, 2 represents ‘B’, etc. Given a digit sequence, count the number of possible decodings of the given digit sequence.
+	     * Input: digits[] = "1234", o/p - 3, The possible decodings are "ABCD", "LCD", "AWD"
+	     */
+	    
+	    // A Dynamic Programming based function to count decodings
+	    int countDecodingDP(char []digits, int n)
+	    {
+	        int [] count = new int[n+1]; // A table to store results of subproblems
+	        count[0] = 1;
+	        count[1] = 1;
+	     
+	        for (int i = 2; i <= n; i++)
+	        {
+	            count[i] = 0;
+	     
+	            // If the last digit is not 0, then last digit must add to
+	            // the number of words
+	            if (digits[i-1] > '0')
+	                count[i] = count[i-1];
+	     
+	            // If second last digit is smaller than 2 and last digit is
+	            // smaller than 7, then last two digits form a valid character
+	            if (digits[i-2] == '1' || (digits[i-2] == '2' && digits[i-1] < '7') )
+	                count[i] += count[i-2];
+	        }
+	        return count[n];
+	    }
+	    
+	    
+	    /* SubString with concatenation of all words
+	     * given: s="barfoothefoobarman" & words=["foo", "bar"], return [0,9].
+	     */
+	    
+	    public List<Integer> findSubstring(String s, String[] words) {
+	        ArrayList<Integer> result = new ArrayList<Integer>();
+	        if(s==null||s.length()==0||words==null||words.length==0){
+	            return result;
+	        } 
+	     
+	        //frequency of words
+	        HashMap<String, Integer> map = new HashMap<String, Integer>();
+	        for(String w: words){
+	            if(map.containsKey(w)){
+	                map.put(w, map.get(w)+1);
+	            }else{
+	                map.put(w, 1);
+	            }
+	        }
+	     
+	        int len = words[0].length();
+	     
+	        for(int j=0; j<len; j++){
+	            HashMap<String, Integer> currentMap = new HashMap<String, Integer>();
+	            int start = j;//start index of start
+	            int count = 0;//count total qualified words so far
+	     
+	            for(int i=j; i<=s.length()-len; i=i+len){
+	                String sub = s.substring(i, i+len);
+	                if(map.containsKey(sub)){
+	                    //set frequency in current map
+	                    if(currentMap.containsKey(sub)){
+	                        currentMap.put(sub, currentMap.get(sub)+1);
+	                    }else{
+	                        currentMap.put(sub, 1);
+	                    }
+	     
+	                    count++;
+	     
+	                    while(currentMap.get(sub)>map.get(sub)){
+	                        String left = s.substring(start, start+len);
+	                        currentMap.put(left, currentMap.get(left)-1);
+	     
+	                        count--;
+	                        start = start + len;
+	                    }
+	     
+	     
+	                    if(count==words.length){
+	                        result.add(start); //add to result
+	     
+	                        //shift right and reset currentMap, count & start point         
+	                        String left = s.substring(start, start+len);
+	                        currentMap.put(left, currentMap.get(left)-1);
+	                        count--;
+	                        start = start + len;
+	                    }
+	                }else{
+	                    currentMap.clear();
+	                    start = i+len;
+	                    count = 0;
+	                }
+	            }
+	        }
+	     
+	        return result;
+	    }
+	    
+	    
+	    /* Trapping rain water -
+	     * Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+	     * given [0,1,0,2,1,0,1,3,2,1,2,1], return 6. It is similar to Candy problem. Where we can scan from both sides
+	     */
+	    
+	    public int trap(int[] height) {
+	        int result = 0;
+	     
+	        if(height==null || height.length<=2)
+	            return result;
+	     
+	        int left[] = new int[height.length];
+	        int right[]= new int[height.length];
+	     
+	        //scan from left to right
+	        int max = height[0];
+	        left[0] = height[0];
+	        for(int i=1; i<height.length; i++){
+	            if(height[i]<max){
+	                left[i]=max;
+	            }else{
+	                left[i]=height[i];
+	                max = height[i];
+	            }
+	        }
+	     
+	        //scan from right to left
+	        max = height[height.length-1];
+	        right[height.length-1]=height[height.length-1];
+	        for(int i=height.length-2; i>=0; i--){
+	            if(height[i]<max){
+	                right[i]=max;
+	            }else{
+	                right[i]=height[i];
+	                max = height[i];
+	            }
+	        }
+	     
+	        //calculate totoal
+	        for(int i=0; i<height.length; i++){
+	            result+= Math.min(left[i],right[i])-height[i];
+	        }
+	     
+	        return result;
+	    }
+	    
+	    /* Summary Ranges
+	     * Given a sorted integer array without duplicates, return the summary of its ranges for consecutive numbers.
+	     * given [0,1,2,4,5,7], return ["0->2","4->5","7"].
+	     */
+	    
+	    public List<String> summaryRanges(int[] nums) {
+	        List<String> result = new ArrayList<String>();
+	     
+	        if(nums == null || nums.length==0)
+	            return result;
+	     
+	        if(nums.length==1){
+	            result.add(nums[0]+"");
+	        }
+	     
+	        int pre = nums[0]; // previous element   
+	        int first = pre; // first element of each range
+	     
+	        for(int i=1; i<nums.length; i++){
+	                if(nums[i]==pre+1){
+	                    if(i==nums.length-1){
+	                        result.add(first+"->"+nums[i]);
+	                    }
+	                }else{
+	                    if(first == pre){
+	                        result.add(first+"");
+	                    }else{
+	                        result.add(first + "->"+pre);   
+	                    }
+	     
+	                    if(i==nums.length-1){
+	                        result.add(nums[i]+"");
+	                    }
+	     
+	                    first = nums[i];
+	                }
+	     
+	                pre = nums[i];
+	        }
+	     
+	        return result;
+	    }
+	    
 	    /* Pancake sorting problem 
 	     * http://www.geeksforgeeks.org/pancake-sorting/
 	     */

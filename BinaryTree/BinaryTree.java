@@ -27,6 +27,36 @@ public class BinaryTree {
 		root = new Node(key);
 	}
 	
+	
+	/* Pre-order traversal:
+		Summary: Begins at the root (1), ends at the right-most node (7)
+		Traversal sequence: 1 2 4 8 9 5 3 6 7
+
+		In-order traversal:
+		Summary: Begins at the left-most node (8), ends at the rightmost node (7)
+		Traversal Sequence: 8 4 9 2 5 1 6 3 7
+
+		Post-order traversal:
+		Summary: Begins with the left-most node (8), ends with the root (1)
+		Traversal sequence: 8 9 4 5 2 6 7 3 1
+
+		When to use Pre-Order, In-order or Post-Order?
+		The traversal strategy the programmer selects depends on the specific needs of the algorithm being designed. 
+		The goal is speed, so pick the strategy that brings you the nodes you require the fastest.
+
+		PreOrder - 
+		If you know you need to explore the roots before inspecting any leaves, you pick pre-order because you will encounter all the roots before all of the leaves.
+		e.g. duplicate tree - put node values in array then from index 0 till end create new tree
+		
+		PostOrder - 
+		If you know you need to explore all the leaves before any nodes, you select post-order because you don't waste any time inspecting roots in search for leaves.
+		e.g. When you want to delete/modify a tree from leaf to root
+		
+		InOrder - 
+		If you know that the tree has an inherent sequence in the nodes, and you want to flatten the tree back into its original sequence, than an in-order traversal should be used. The tree would be flattened in the same way it was created. A pre-order or post-order traversal might not unwind the tree back into the sequence which was used to create it.
+		e.g. To get values of node in non-increasing order/ mostly in case of BST we use in-order
+	*/
+	
 	//*** Traversing through tree***//
 	/*
 	 * PostOrder traversing (Left, Right, Root)
@@ -47,7 +77,7 @@ public class BinaryTree {
 	
 	/*
 	 * PreOrder traversing (Root, Left, Right)
-	 * top to bottom pocess
+	 * top to bottom process
 	 * 1 2 4 8 9 5 3 6 7
 	 */
 	public void PreOrder(Node node){
@@ -116,15 +146,42 @@ public class BinaryTree {
 		}
 	}
 	
+	/* Invert binary tree - swap left and right nodes*/
+	
+	public Node invertTree(Node root) {
+	    LinkedList<Node> queue = new LinkedList<Node>();
+	 
+	    if(root!=null){
+	        queue.add(root);
+	    }
+	 
+	    while(!queue.isEmpty()){
+	        Node p = queue.poll();
+	        if(p.left!=null)
+	            queue.add(p.left);
+	        if(p.right!=null)
+	            queue.add(p.right);
+	 
+	        Node temp = p.left;
+	        p.left = p.right;
+	        p.right = temp;
+	    }
+	 
+	    return root;    
+	}
+	
+	
+	
 	/* find maximum in binary tree
-	 * Since it is not Binary search tree we need to compare each element. In BST rightmost elemnt will be
+	 * Since it is not Binary search tree we need to compare each element. In BST rightmost element will be
 	 * max and left most min. 
 	 * Same approach can be taken to find minimum
+	 * Implemented using postOrder traversal approach
 	 */
 	
 	public int findMax(Node root){
 		if (root == null)
-			return Integer.MAX_VALUE;
+			return Integer.MIN_VALUE;
 		
 		int result = root.key;
 		int lMax = findMax(root.left);
@@ -134,7 +191,7 @@ public class BinaryTree {
 		if (rMax > result)
 			result = rMax;
 		
-		return rMax;
+		return result;
 		
 	}
 	
@@ -159,7 +216,7 @@ public class BinaryTree {
 			node = node.left;
 		}
 		
-		//itereate through each node in stack if it has right node then store that in stack 
+		//Iterate through each node in stack if it has right node then store that in stack 
 		// and repeat procedure of left nodes again for that right node
 		while(stack.size() > 0) {
 			node = stack.pop();
@@ -180,12 +237,14 @@ public class BinaryTree {
 		
 		return result;
 	}
+	
 	/*
 	 * Print height of root -- no of nodes along longest path from root to down at farthest leaf
 	 * Algorithm is 
 	 * a) If root is null return height as 0
 	 * b) compute height of each sub tree (left node , right node)
 	 * c) return larger height between left and right + 1
+	 * Implemented using postoRder approach
 	 */
 	
 	public int height(Node node){
@@ -320,6 +379,7 @@ public class BinaryTree {
 	 *   					null						1
 	 *   								null			1				
 	 */
+	//used preorder approach 
 	public void printGivenLevel(Node node, int level){
 		
 		if(node == null)
@@ -335,7 +395,7 @@ public class BinaryTree {
 	
 	/*
 	 * Print tree in spiral traversal
-	 * This is extention of BFS/Level order traversal just added one flag to direct order of printing
+	 * This is extension of BFS/Level order traversal just added one flag to direct order of printing
 	 */
 	void printSpiral(Node node) 
     {
@@ -391,13 +451,13 @@ public class BinaryTree {
     int getLevelUtil(Node node, int data, int level) 
     {
         if (node == null)
-            return 0;
+            return -1;
   
         if (node.key == data)
             return level;
   
         int downlevel = getLevelUtil(node.left, data, level + 1);
-        if (downlevel != 0)
+        if (downlevel != -1)
             return downlevel;
   
         downlevel = getLevelUtil(node.right, data, level + 1);
@@ -409,7 +469,8 @@ public class BinaryTree {
     /* children sum property problem
      * returns 1 if children sum property holds for the given
     node and both of its children*/
-    int isSumProperty(Node node) 
+    //preorder approach
+    boolean isSumProperty(Node node) 
     {
           
         /* left_data is left child data and right_data is for right 
@@ -420,7 +481,7 @@ public class BinaryTree {
         return true */
         if (node == null
                 || (node.left == null && node.right == null))
-            return 1;
+            return true;
         else
         {
              
@@ -437,11 +498,11 @@ public class BinaryTree {
             /* if the node and both of its children satisfy the
                property return 1 else 0*/
             if ((node.key == left_data + right_data)
-                    && (isSumProperty(node.left)!=0)
-                    && isSumProperty(node.right)!=0)
-                return 1;
+                    && (isSumProperty(node.left))
+                    && isSumProperty(node.right))
+                return true;
             else
-                return 0;
+                return false;
         }
     }
     
@@ -548,23 +609,20 @@ public class BinaryTree {
 	 * Clone binary tree with recursion
 	 */
 	
-	public Node cloneMyTree(Node tNode, Node cNode) {
+	public Node cloneMyTree(Node tNode) {
 		if(tNode == null || tNode.key == 0)
 			return tNode;
 		
-		Node cLeftNode = new Node();
-		Node cRightNode = new Node();
+		Node cNode = new Node();
 		
 		if (tNode.left != null) {
-			cLeftNode = cloneMyTree(tNode.left, cLeftNode);
+			cNode.left = cloneMyTree(tNode.left);
 		}
 		
 		if (tNode.right != null) {
-			cRightNode = cloneMyTree(tNode.right, cRightNode);
+			cNode.right = cloneMyTree(tNode.right);
 		}
 		
-		cNode.left = cLeftNode;
-		cNode.right = cRightNode;
 		cNode.key = tNode.key;
 		
 		return cNode;
@@ -619,6 +677,47 @@ public class BinaryTree {
 		}
 		return i;
 	}
+	
+	/* Build tree using InOrder and PostOrder traversal 
+	 * in-order:   4 2 5  (1)  6 7 3 8, post-order: 4 5 2  6 7 8 3  (1)
+	 * Using the length of left sub-tree in InOrder, we can identify left and right sub-trees 
+	 * in post-order array. Recursively, we can build up the tree
+	 */
+	
+	public Node buildTree(int[] inorder, int[] postorder) {
+		int inStart = 0;
+		int inEnd = inorder.length - 1;
+		int postStart = 0;
+		int postEnd = postorder.length - 1;
+	 
+		return buildTree(inorder, inStart, inEnd, postorder, postStart, postEnd);
+	}
+	 
+	public Node buildTree(int[] inorder, int inStart, int inEnd,
+			int[] postorder, int postStart, int postEnd) {
+		if (inStart > inEnd || postStart > postEnd)
+			return null;
+	 
+		int rootValue = postorder[postEnd];
+		Node root = new Node(rootValue);
+	 
+		int k = 0;
+		for (int i = 0; i < inorder.length; i++) {
+			if (inorder[i] == rootValue) {
+				k = i;
+				break;
+			}
+		}
+	 
+		root.left = buildTree(inorder, inStart, k - 1, postorder, postStart,
+				postStart + k - (inStart + 1));
+		// Becuase k is not the length, it it need to -(inStart+1) to get the length
+		root.right = buildTree(inorder, k + 1, inEnd, postorder, postStart + k- inStart, postEnd - 1);
+		// postStart+k-inStart = postStart+k-(inStart+1) +1
+	 
+		return root;
+	}
+	
 	
 	/* Build tree using level order and in order
 	 * Level order will start with root node. Find that in Inorder, left elements to that
@@ -763,7 +862,8 @@ public class BinaryTree {
 	}
 	
 	/* Print all nodes at K distance from given target node
-	 * Two steps 1) Nodes in the subtree rooted with target node 2)  Other nodes, may be an ancestor of target, or a node in some other subtree (k-d) 
+	 * Two steps 1) Nodes in the subtree rooted with target node 
+	 * 2)  Other nodes, may be an ancestor of target, or a node in some other subtree (k-d) 
 	 */
 	
 	// Prints all nodes at distance k from a given target node.
@@ -890,7 +990,7 @@ public class BinaryTree {
 			//node with two children: get inorder successor (smallest in the right subtree)
 			root.key = minBSTValue(root.right);
 			
-			//Delete inorder successor
+			//Delete inorder successor because we assinged that as key in step above
 			root.right = deleteBSTRec(root.right, root.key);
 		}
 		
@@ -963,6 +1063,27 @@ public class BinaryTree {
 		}
 	}
 	
+	/* from given array create binary tree, then get distance between 2 nodes in that tree
+	 * Amazon test questions
+	 */
+	
+	public int getDistance(int [] values, int n, int node1, int node2) {
+		
+		Node root = new Node(values[0]);
+		for (int i=1; i<n;i++){
+				root = insertNodeBST(root, values[i]);
+		} 
+		
+		
+		Node node = findLCABST(root, node1, node2);
+		
+		int levelLCA = getLevel(root, node.key);
+		int level1 = getLevel(root, node1);
+		int level2 = getLevel(root, node2);		
+		
+		return level1 + level2 - 2*levelLCA; 
+		
+	}
 	/*
 	 * Find predecessor and successor of key in BST
 	 * Node:- The maximum value(root.right) in left subtree is predecessor
@@ -1028,7 +1149,8 @@ public class BinaryTree {
 	/* Find Lowest Common ancestor in "Binary Tree"
 	 * Since it is Binary Tree and not BST we can not use property that n1 < n < n2.
 	 * Here we need to first get path from root to both numbers in arrays. Then first element in 
-	 * those arrays which is not common is LCA. Hence we need 2 functions  
+	 * those arrays which is not common is LCA. Hence we need 2 functions 
+	 * THis solution takes more space 
 	 */
 	
 	public int findLCA(Node node, int n1, int n2) {
@@ -1070,6 +1192,33 @@ public class BinaryTree {
 		return false;
 	}
 	
+	/* Better solution to get lca in binary tree is 
+	 * search for either of two nodes
+	 * if any of two node is found we return that to parent of node
+	 * any time we have parent node who has not null from left and right side, it is common ancestor node
+	 */
+	
+	public Node lca(Node root, Node n1, Node n2){
+		
+		if (root == null)
+			return null;
+		
+		if (root == n1 || root == n2)
+			return root;
+		
+		Node left = lca(root.left, n1, n2);
+		Node right = lca(root.right, n1, n2);
+		
+		if (left != null && right != null)
+			return root;
+		
+		if (left == null && right == null)
+			return null;
+		
+		return left != null ? left : right;
+		
+	}
+	
 	/*
 	 * Find ceil for given key in BST
 	 * ceil - smallest number in BST which is greater than (or equal to) given key(data) value
@@ -1093,25 +1242,24 @@ public class BinaryTree {
 	/*
 	 * validate BST
 	 * make sure root.left.key <= root.key && root.right.key >= root.key
+	 * here min = Integer.MIN_VALUE and max = Integer.MAX_VALUE
 	 */
 	
-	public boolean isValidBST(Node root){
+	public boolean isValidBST(Node root, int min, int max){
 		if (root == null)
 			return true;
 		
-		if (root.left != null && root.left.key > root.key)
+		if (root.key <= min || root.key >= max)
 			return false;
 		
-		if (root.right != null && root.right.key < root.key)
-			return false;
-		/* return false even if at any node it is not BST */
-		return isValidBST(root.left) && isValidBST(root.right);
+		return isValidBST(root.left, min, root.key) && isValidBST(root.right, root.key, max);
+				
 	}
 	
 	/*
 	 * flatten binary tree i.e. convert binary tree into linked list like structure - i.e. everything becomes 'right' 
 	 * 1) first traverse through all root.left, move them to right and make left nodes null.
-	 * 2) While doing so if root also has root.right, then store it tempororily in stack which will be
+	 * 2) While doing so if root also has root.right, then store it temporarily in stack which will be
 	 *    marked as root.right after all left nodes are done.
 	 *    Data structure to store nodes is stack because we want to process LIFO. If we wanted FIFO 
 	 *    we can use queue 
@@ -1123,7 +1271,7 @@ public class BinaryTree {
 		
 		Stack<Node> stack = new Stack<Node>();
 		while (root != null || !stack.isEmpty()) {
-			//if right node exists push it to temporory storage 'stack'
+			//if right node exists push it to temporary storage 'stack'
 			if (root.right != null)
 				stack.push(root.right);
 			
@@ -1243,7 +1391,30 @@ public class BinaryTree {
         maxPathSumUtil(root, res);
         return res;
     }
-	
+    
+	/*
+	 * Get maximum sum from root to leaf in binary tree
+	 */
+    
+    public int maxRootToLeafSum(Node root) {
+    	int max = Integer.MIN_VALUE; 
+    	calculateSum(root, max);
+    	return max;
+    }
+    
+    public int calculateSum(Node root, int max) {
+    	if (root == null)
+    		return 0;
+     
+    	int left = calculateSum(root.left, max);
+    	int right = calculateSum(root.right, max);
+     
+    	int current = Math.max(root.key, Math.max(root.key + left, root.key + right));
+     
+    	max = Math.max(max, Math.max(current, left + root.key + right));
+     
+    	return current;
+    }
 	
 	/*
 	 * sortedArray to Binary searh tree - Google question, 
@@ -1442,6 +1613,25 @@ public class BinaryTree {
 			(isIsomorphic(n1.left, n2.right) && isIsomorphic(n1.right, n2.left));
 	}
 
+	/* Unique binary search trees
+	 * Given n, how many structurally unique BST's (binary search trees) that store values 1...n?
+	 * For example, Given n = 3, there are a total of 5 unique BST's.
+	 */
+	public int numTrees(int n) {
+		int[] count = new int[n + 1];
+	 
+		count[0] = 1;
+		count[1] = 1;
+	 
+		for (int i = 2; i <= n; i++) {
+			for (int j = 0; j <= i - 1; j++) {
+				count[i] = count[i] + count[j] * count[i - j - 1];
+			}
+		}
+	 
+		return count[n];
+	}
+	
 	/* find all possible intereretation of integer array of digits
 	 * 'a' - 1, 'b' -2, .. 'z' - 26
 	 * input: {9, 1, 8}
@@ -1754,7 +1944,7 @@ public class BinaryTree {
 	     */
 	    
 	    public int evaluateExpression(StringNode root) {
-	    	String operatots = "+-*/";
+	    	String operators = "+-*/";
 	    	
 	    	if (root == null)
 	    		return 0;
@@ -1762,12 +1952,10 @@ public class BinaryTree {
 	    	if (root.left == null && root.right == null)
 	    		return Integer.valueOf(root.key);
 	    	
-	  //  	Stack<Integer> stk = new Stack<Integer>();
-	    	
 	    	int lValue = evaluateExpression(root.left);
 	    	int rValue = evaluateExpression(root.right);
 	    	
-	    	if (operatots.contains(root.key)){
+	    	if (operators.contains(root.key)){
 	     		
 	    		switch (root.key){
 	    		case "+" :
@@ -1780,24 +1968,7 @@ public class BinaryTree {
 	    			      return (lValue/rValue);
 	    		}
 	    		
-	    		/*int a = stk.pop();
-	    		int b = stk.pop();
-	    		
-	    		switch (root.key){
-	    		case "+" :
-	    			      stk.push(a+b);
-	    			      break;
-	    		case "-" :
-	    			      stk.push(a-b);
-	    			      break;
-	    		case "*" :
-	    			      stk.push(a*b);
-	    			      break;
-	    		case "/" :
-	    			      stk.push(a/b);
-	    			      break;
-	    		}*/
-	    		
+	    			    		
 	    	} else {
 	    		return Integer.valueOf(root.key);
 	    	}
@@ -1808,6 +1979,50 @@ public class BinaryTree {
 	     * Dist(n1, n2) = Dist(root, n1) + Dist(root, n2) - 2*Dist(root, lca) where lca = lowest common ancestor
 	     * 
 	     */
+	    
+	    /* Recover Binary search tree
+	     * Two elements of a binary search tree (BST) are swapped by mistake. Recover the tree without changing its structure.
+	     * Inorder traveral will return values in an increasing order. So if an element is less than its previous element,the previous element is a swapped node.
+	     */
+	    
+	    public static Node first;
+	    public static Node second; 
+	    public static Node pre; 
+	    
+	    public void findOutOfInorder(Node root){
+	        if(root==null)
+	            return;
+	 
+	        findOutOfInorder(root.left);
+	 
+	        if(pre==null){
+	            pre=root;
+	        }else{
+	            if(root.key<pre.key){
+	                if(first==null){
+	                    first=pre;
+	                }
+	 
+	                second=root;
+	            }
+	            pre=root;
+	        }
+	 
+	        findOutOfInorder(root.right);
+	    }
+	 
+	    public void recoverTree(Node root) {
+	        if(root==null)
+	            return;
+	 
+	        findOutOfInorder(root);
+	        if(second!=null && first !=null){
+	            int val = second.key;
+	            second.key = first.key;
+	            first.key = val;
+	        }
+	 
+	    }
 	    
 	    /* Construct Binary Tree from given Parent Array representation
 	     * The value of the root node index would always be -1 as there is no parent for root.
@@ -1938,6 +2153,8 @@ public class BinaryTree {
 		 key = 0;
 		 left = right = null;
 	 }
+	 
+	 
 }
  
  class StringNode {

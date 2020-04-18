@@ -298,11 +298,12 @@ public class ArrayString {
 	/*Given an array of integers, find two numbers such that they add up to a specific target number.
 	  The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2.
 	  Input: numbers={2, 7, 11, 15}, target=9
-		Output: index1=0, index2=1	*/	
+		Output: index1=0, index2=1
+		Google*/
 
 	public int[] twoSum(int[] nums, int target) {
 	    if(nums==null || nums.length<2)
-	        return new int[]{0,0};
+	        return new int[]{-1,-1};
 	    //HashMap<currentValue from array, index of number(target-currentValue)>
 	    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 	    for(int i=0; i<nums.length; i++){
@@ -315,7 +316,7 @@ public class ArrayString {
 	        }
 	    }
 	 
-	    return new int[]{0,0};
+	    return new int[]{-1,-1};
 	}
 	
 	// One more approach will be two pointers on sorted array(one from start and another from end, if sum > target -> end--, if sum < target -> start++)
@@ -356,7 +357,201 @@ public class ArrayString {
 		
 		return result;
 	}
-	
+
+	/* Roman to Integer conversion
+	 * I - 1, V - 5, X - 10, L - 50, C - 100, D - 500, M - 1000
+	 */
+      public static int intValue(char r) {
+          if (r == 'I')
+              return 1;
+          if (r == 'V')
+              return 5;
+          if (r == 'X')
+              return 10;
+          if (r == 'L')
+              return 50;
+          if (r == 'C')
+              return 100;
+          if (r == 'D')
+              return 500;
+          if (r == 'M')
+              return 1000;
+          return -1;
+      }
+
+      public static int romanToInteger(String str) {
+          //intitlialise result
+          int res = 0;
+
+          for (int i=0; i < str.length(); i++) {
+
+              //get value of symbol str.charAt(i)
+              int s1 = intValue(str.charAt(i));
+
+              //get value of symbol str.charAt(i+1)
+              if (i+1 < str.length()) {
+                  int s2 = intValue(str.charAt(i+1));
+                  //compare both values
+
+                  if (s1 >= s2) {
+                      // if value of current symbol is greater or equal to next symbol
+                      res = res + s1;
+                  } else {
+                      // if value of current symbol is less than next symbol
+                      res = res + s2 - s1;
+                      i++;
+                  }
+              } else {
+                  res = res + s1;
+                  i++;
+              }
+          }
+          return res;
+      }
+
+      /* convert to integer to Roman */
+
+    public int sub_digit(char num1, char num2, int i, char[] c) {
+        c[i++] = num1;
+        c[i++] = num2;
+        return i;
+    }
+
+    public int digit(char ch, int n, int i, char[] c) {
+        for (int j=0; j<n; j++) {
+            c[i++] = ch;
+        }
+        return i;
+    }
+
+    public void printInttoRoman(int number) {
+        char c[10001];
+        int i = 0;
+
+        if(number<0) {
+            printf("Invalid number");
+            return -1;
+        }
+        // to convert decimal number to roman numerals
+        while (number != 0) {
+            //if base value of number is greater than 1000
+            if (number >= 1000) {
+                //Add 'M' number/1000 times after index i
+                i = digit('M', number/1000, i, c);
+                number = number%1000;
+            }
+            //if base value of number is greater than or equal to 500
+            else if (number >= 500) {
+                //To add base symbol to the character array
+                if (number < 900) {
+                    //Add 'D' number/1000 times after index i
+                    i = digit('D', number/500, i, c);
+                    number = number%500;
+                }
+                // To handle subtractive notation in case of number having digit as 9 and
+                // adding corresponding base symbol
+                else {
+                    //Add C and M after index i
+                    i = sub_digit('C', 'M', i, c);
+                    number = number%100;
+                }
+            }
+            //if base value of number is greater than or equal to 100
+            else if (number >= 100) {
+                //To add base symbol to the character array
+                if (number < 400) {
+                    i = digit('C', number/100, i, c);
+                    number = number%100;
+                }
+                // To handle subtractive notation in case of number
+                // having digit as 4 and adding corresponding base
+                // symbol
+                else
+                {
+                    i = sub_digit('C','D',i,c);
+                    number = number%100;
+                }
+            }
+            // If base value of number is greater than or equal to 50
+            else if (number >= 50 )
+            {
+                // To add base symbol to the character array
+                if (number < 90)
+                {
+                    i = digit('L', number/50,i,c);
+                    number = number%50;
+                }
+
+                // To handle subtractive notation in case of number
+                // having digit as 9 and adding corresponding base
+                // symbol
+                else
+                {
+                    i = sub_digit('X','C',i,c);
+                    number = number%10;
+                }
+            }
+            // If base value of number is greater than or equal to 10
+            else if (number >= 10)
+            {
+                // To add base symbol to the character array
+                if (number < 40)
+                {
+                    i = digit('X', number/10,i,c);
+                    number = number%10;
+                }
+
+                // To handle subtractive notation in case of
+                // number having digit as 4 and adding
+                // corresponding base symbol
+                else
+                {
+                    i = sub_digit('X','L',i,c);
+                    number = number%10;
+                }
+            }
+
+            // If base value of number is greater than or equal to 5
+            else if (number >= 5)
+            {
+                if (number < 9)
+                {
+                    i = digit('V', number/5,i,c);
+                    number = number%5;
+                }
+
+                // To handle subtractive notation in case of number
+                // having digit as 9 and adding corresponding base
+                // symbol
+                else
+                {
+                    i = sub_digit('I','X',i,c);
+                    number = 0;
+                }
+            }
+
+            // If base value of number is greater than or equal to 1
+            else if (number >= 1)
+            {
+                if (number < 4)
+                {
+                    i = digit('I', number,i,c);
+                    number = 0;
+                }
+
+                // To handle subtractive notation in case of
+                // number having digit as 4 and adding corresponding
+                // base symbol
+                else
+                {
+                    i = sub_digit('I', 'V', i, c);
+                    number = 0;
+                }
+            }
+        }
+    }
+
+
 	/*
 	 * Wildcard matching/REgular expression matching - string and pattern matching 
 	 * '?'  - can replace single character, '*' - can replace any sequence of characters

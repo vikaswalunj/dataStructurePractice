@@ -17,20 +17,12 @@ public class Functions {
 	        return result;
 	 
 	    //sort updates by starting index
-	    Arrays.sort(updates, new Comparator<int[]>(){
-	        public int compare(int[] a, int [] b){
-	            return a[0]-b[0];
-	        }
-	    });
+	    Arrays.sort(updates, Comparator.comparingInt(a -> a[0]));
 	 
 	    ArrayList<int[]> list = new ArrayList<int[]>();
 	 
 	    //create a heap sorted by ending index
-	    PriorityQueue<Integer> queue = new PriorityQueue<Integer>(new Comparator<Integer>(){
-	        public int compare(Integer a, Integer b){
-	            return updates[a][1]-updates[b][1];
-	        }
-	    });
+	    PriorityQueue<Integer> queue = new PriorityQueue<Integer>(Comparator.comparingInt(a -> updates[a][1]));
 	 
 	    int sum=0;
 	    int j=0;

@@ -577,7 +577,7 @@ public class Matrix {
 		if (r<0 || c<0) return 0;
 		if (r==0 && c==0) return (k == mat[r][c] ? 1:0);
 		
-		// (m,n) can be reached wither through (m-1, n) or (m, n-1) 
+		// (m,n) can be reached wither through (m-1, n)/previous row  or (m, n-1)/previous column
 		return pathCoins(mat, r-1, c, k-mat[r][c]) +
 				pathCoins(mat, r, c-1, k-mat[r][c]);
 	}
@@ -817,7 +817,7 @@ public class Matrix {
 	    return Integer.MAX_VALUE;
 	}
 	
-	/* Given a Boolean Matrix, find k such that all elements in k’th row are 0 and k’th column are 1.
+	/* Given a Boolean Matrix, find k such that all elements in kï¿½th row are 0 and kï¿½th column are 1.
 	 * http://www.geeksforgeeks.org/find-k-such-that-all-elements-in-kth-row-are-0-and-kth-column-are-1-in-a-boolean-matrix/
 	 */
 	
@@ -1018,13 +1018,13 @@ public class Matrix {
 	
 	public void rotateClockWise(int[][] matrix) {
 		int n = matrix.length;
-		for (int i = 0; i < n / 2; i++) {
-			for (int j = 0; j < Math.ceil(((double) n) / 2.); j++) {
-				int temp = matrix[i][j];
-				matrix[i][j] = matrix[n-1-j][i];
-				matrix[n-1-j][i] = matrix[n-1-i][n-1-j];
-				matrix[n-1-i][n-1-j] = matrix[j][n-1-i];
-				matrix[j][n-1-i] = temp;
+		for (int r = 0; r < n / 2; i++) {
+			for (int c = 0; c < Math.ceil(((double) n) / 2.); c++) {
+				int temp = matrix[r][c];
+				matrix[r][c] = matrix[n-1-c][r];
+				matrix[n-1-c][r] = matrix[n-1-r][n-1-c];
+				matrix[n-1-r][n-1-c] = matrix[c][n-1-r];
+				matrix[c][n-1-r] = temp;
 			}
 		}
 	}

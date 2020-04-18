@@ -210,8 +210,8 @@ public class FunctionsDynamicProgram {
     
     /* Minimum cost to fill given weight in bag
      * You are given a bag of size W kg and you are provided costs of packets different weights of oranges in array cost[] 
-     * where cost[i] is basically cost of ‘i’ kg packet of oranges. 
-     * Where cost[i] = -1 means that ‘i’ kg packet of orange is unavailable
+     * where cost[i] is basically cost of ï¿½iï¿½ kg packet of oranges. 
+     * Where cost[i] = -1 means that ï¿½iï¿½ kg packet of orange is unavailable
      */
     //cost[] - initial cost array, W - capacity of bacg
     public int minimumCost(int cost[], int n, int W){
@@ -286,7 +286,7 @@ public class FunctionsDynamicProgram {
   
   /*
    * find longest palindromic subsequence
-   * e.g. in string "BBABCBCAB" output = 7 because “BABCBAB” is longest palindrome
+   * e.g. in string "BBABCBCAB" output = 7 because ï¿½BABCBABï¿½ is longest palindrome
    */
   // i - starting index and j - last index
   public int longestPalindromeSeq(char [] seq, int i, int j) {
@@ -439,8 +439,8 @@ public class FunctionsDynamicProgram {
   
   
   /* Palindrome partitioning - Given a string, a partitioning of the string is a palindrome partitioning if every substring of the partition is a palindrome. 
-   * For example, “aba|b|bbabb|a|b|aba” is a palindrome partitioning of “ababbbabbababa”. minimum 3 cuts are needed for “ababbbabbababa”. 
-   * The three cuts are “a|babbbab|b|ababa”.
+   * For example, ï¿½aba|b|bbabb|a|b|abaï¿½ is a palindrome partitioning of ï¿½ababbbabbababaï¿½. minimum 3 cuts are needed for ï¿½ababbbabbababaï¿½. 
+   * The three cuts are ï¿½a|babbbab|b|ababaï¿½.
    */
   
   //Returns the minimum number of cuts needed to partition a string
@@ -725,7 +725,7 @@ public class FunctionsDynamicProgram {
 	
 	/*Ugly Numbers
 	 * Ugly numbers are numbers whose only prime factors are 2, 3 or 5. The sequence 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15
-	 * Given a number n, the task is to find n’th Ugly number.
+	 * Given a number n, the task is to find nï¿½th Ugly number.
 	 * n=7, output = 8; n=10, output=12; n=15, output=24
 	 */
 	
@@ -918,6 +918,58 @@ public class FunctionsDynamicProgram {
 		}
 		return count[r-1][c-1];
 	}
+
+	/* now if we add obstacles - add 1/X in grid which can not be path
+	   count number of ways to reach end
+	 */
+
+	public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+		if(obstacleGrid==null||obstacleGrid.length==0)
+			return 0;
+
+		int m = obstacleGrid.length;
+		int n = obstacleGrid[0].length;
+
+		if(obstacleGrid[0][0]==1||obstacleGrid[m-1][n-1]==1)
+			return 0;
+
+
+		int[][] dp = new int[m][n];
+		dp[0][0]=1;
+
+		//left column
+		for(int i=1; i<m; i++){
+			if(obstacleGrid[i][0]==1){     // this cell is obstacle
+				dp[i][0] = 0;
+			}else{
+				dp[i][0] = dp[i-1][0];
+			}
+		}
+
+		//top row
+		for(int i=1; i<n; i++){
+			if(obstacleGrid[0][i]==1){     // this cell is obstacle
+				dp[0][i] = 0;
+			}else{
+				dp[0][i] = dp[0][i-1];
+			}
+		}
+
+		//fill up cells inside
+		for(int i=1; i<m; i++){
+			for(int j=1; j<n; j++){
+				if(obstacleGrid[i][j]==1){   // this cell is obstacle
+					dp[i][j]=0;
+				}else{
+					dp[i][j]=dp[i-1][j]+dp[i][j-1];
+				}
+
+			}
+		}
+
+		return dp[m-1][n-1];
+	}
+
 	
 	/* Count number of ways to reach given score in a game
 	 * allowed moves are 3, 5, 10
@@ -1149,7 +1201,7 @@ public class FunctionsDynamicProgram {
 	
 	/* Longest Repeating Subsequence
 	 * Given a string, find length of the longest repeating subseequence such that 
-	 * the two subsequence don’t have same string character at same position,
+	 * the two subsequence donï¿½t have same string character at same position,
 	 */
 	
 	public int findLongestRepeatingSubSeq(String str)

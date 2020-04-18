@@ -24,7 +24,8 @@ public class TestArrayString {
 		
 		/*findTotal - amazon que*/
 		String[] strArray = {"5", "-2", "4", "Z", "X", "9", "+", "+"};
-		System.out.println(arst.findTotal(strArray, 8));
+		String str = "IIV";
+		System.out.println(arst.romanToInteger(str));
 		
 	}
 	

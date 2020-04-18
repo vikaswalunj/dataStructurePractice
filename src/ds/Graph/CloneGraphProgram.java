@@ -43,4 +43,33 @@ public class CloneGraphProgram {
 		
 		return copyMap.get(source);
 	}
+
+
+	public GraphNode cloneGraphNew(GraphNode source) {
+
+		LinkedList<GraphNode> queue = new LinkedList<GraphNode>();
+		queue.add(source);
+
+		//put the node into map
+		HashMap<GraphNode, GraphNode> copyMap = new HashMap<GraphNode, GraphNode>();
+		copyMap.put(source, new GraphNode(source.val));
+
+		while (!queue.isEmpty()) {
+			//get front node in queue and visit its neighbours
+			GraphNode u = queue.poll();
+
+			GraphNode cloneNodeU = copyMap.get(u);
+			u.neighbours.forEach(n -> {
+				GraphNode cloneNodeG = copyMap.get(n);
+				if (cloneNodeG == null) {
+					queue.add(n);
+					cloneNodeG = new GraphNode(n.val);
+					copyMap.put(n, cloneNodeG);
+				}
+				cloneNodeU.neighbours.add(cloneNodeG);
+			});
+		}
+
+		return copyMap.get(source);
+	}
 }

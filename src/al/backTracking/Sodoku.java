@@ -1,12 +1,15 @@
+/*
 package al.backTracking;
 
 public class Sodoku {
 
 	public int UNASSIGNED = 0;
 	public int N = 9;
-	/* Takes a partially filled-in grid and attempts to assign values to
+	*/
+/* Takes a partially filled-in grid and attempts to assign values to
 	  all unassigned locations in such a way to meet the requirements
-	  for Sudoku solution (non-duplication across rows, columns, and boxes) */
+	  for Sudoku solution (non-duplication across rows, columns, and boxes) *//*
+
 	boolean SolveSudoku(int grid[N][N])
 	{
 	    int row, col;
@@ -35,10 +38,12 @@ public class Sodoku {
 	    return false; // this triggers backtracking
 	}
 	 
-	/* Searches the grid to find an entry that is still unassigned. If
+	*/
+/* Searches the grid to find an entry that is still unassigned. If
 	   found, the reference parameters row, col will be set the location
 	   that is unassigned, and true is returned. If no unassigned entries
-	   remain, false is returned. */
+	   remain, false is returned. *//*
+
 	boolean FindUnassignedLocation(int grid[N][N], int row, int col)
 	{
 	    for (row = 0; row < N; row++)
@@ -48,8 +53,10 @@ public class Sodoku {
 	    return false;
 	}
 	 
-	/* Returns a boolean which indicates whether any assigned entry
-	   in the specified row matches the given number. */
+	*/
+/* Returns a boolean which indicates whether any assigned entry
+	   in the specified row matches the given number. *//*
+
 	boolean UsedInRow(int grid[N][N], int row, int num)
 	{
 	    for (int col = 0; col < N; col++)
@@ -58,8 +65,10 @@ public class Sodoku {
 	    return false;
 	}
 	 
-	/* Returns a boolean which indicates whether any assigned entry
-	   in the specified column matches the given number. */
+	*/
+/* Returns a boolean which indicates whether any assigned entry
+	   in the specified column matches the given number. *//*
+
 	boolean UsedInCol(int grid[N][N], int col, int num)
 	{
 	    for (int row = 0; row < N; row++)
@@ -68,8 +77,10 @@ public class Sodoku {
 	    return false;
 	}
 	 
-	/* Returns a boolean which indicates whether any assigned entry
-	   within the specified 3x3 box matches the given number. */
+	*/
+/* Returns a boolean which indicates whether any assigned entry
+	   within the specified 3x3 box matches the given number. *//*
+
 	boolean UsedInBox(int grid[N][N], int boxStartRow, int boxStartCol, int num)
 	{
 	    for (int row = 0; row < 3; row++)
@@ -79,18 +90,24 @@ public class Sodoku {
 	    return false;
 	}
 	 
-	/* Returns a boolean which indicates whether it will be legal to assign
-	   num to the given row,col location. */
+	*/
+/* Returns a boolean which indicates whether it will be legal to assign
+	   num to the given row,col location. *//*
+
 	boolean isSafe(int grid[N][N], int row, int col, int num)
 	{
-	    /* Check if 'num' is not already placed in current row,
-	       current column and current 3x3 box */
+	    */
+/* Check if 'num' is not already placed in current row,
+	       current column and current 3x3 box *//*
+
 	    return !UsedInRow(grid, row, num) &&
 	           !UsedInCol(grid, col, num) &&
 	           !UsedInBox(grid, row - row%3 , col - col%3, num);
 	}
 	 
-	/* A utility function to print grid  */
+	*/
+/* A utility function to print grid  *//*
+
 	void printGrid(int grid[N][N])
 	{
 	    for (int row = 0; row < N; row++)
@@ -101,7 +118,9 @@ public class Sodoku {
 	    }
 	}
 	 
-	/* Driver Program to test above functions */
+	*/
+/* Driver Program to test above functions *//*
+
 	int main()
 	{
 	    // 0 means unassigned cells
@@ -122,3 +141,4 @@ public class Sodoku {
 	    return 0;
 	}
 }
+*/

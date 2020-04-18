@@ -1,6 +1,7 @@
 package ds.ArrayString;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TestArrayString {
@@ -51,16 +52,18 @@ public class TestArrayString {
 		
 		arst.closestLocations(3, list, 2);*/
 		
-		int arr[] = {1,2,3,4,5,6,7,8,9};
-		arst.rotate(arr, -3);
-		
+		//int arr[] = {2,1,5,6,2,3};
+		System.out.println(arst.simplifyPath("/home/"));
+		System.out.println(arst.simplifyPath("/a/./b/../../c/"));
+		System.out.println(arst.simplifyPath("/../"));
+		System.out.println(arst.simplifyPath("/home//foo/"));
+//		arst.rotate(arr, -3);
 		//arst.maxFrequencyNumber(arr, 2);
 		/*findTotal - amazon que*/
 		/*String unStr = "\u4E2D";
 		System.out.println(unStr);*/
 		//int[] strArray = {5,2,8,8,5,5,8,1,1,2};
 		//arst.printFrequencySortedArray(strArray);
-		
 	}
 	
 	

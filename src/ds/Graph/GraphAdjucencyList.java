@@ -112,15 +112,13 @@ public class GraphAdjucencyList {
 		while(queue.size() != 0){
 			v = queue.poll();
 			System.out.println("vertex at head of queue");
-			Iterator<Integer> list = adjList.get(v).listIterator();
-			while (list.hasNext()) {
-				int ver = list.next();
+			adjList.get(v).forEach(ver -> {
 				if (!visited[ver]) {
 					visited[ver] = true;
 					queue.add(ver);
 					System.out.println("vertex added to queue" +ver);
 				}
-			}
+			});
 		}
 	}
 	
@@ -146,15 +144,13 @@ public class GraphAdjucencyList {
 	//DFS utility which works recursively
 	public void DFSUtil(int v, Boolean visited[]){
 		visited[v] = true;
-		
-		Iterator<Integer> i = adjList.get(v).listIterator();
-		while (i.hasNext()) {
-			int n = i.next();
-			if (!visited[n]){
-				visited[n] = true;
-				DFSUtil(n, visited);
+
+		adjList.get(v).forEach(neighbour -> {
+			if (!visited[neighbour]) {
+				visited[neighbour] = true;
+				DFSUtil(neighbour, visited);
 			}
-		}
+		});
 	}
 	
 	
@@ -357,32 +353,28 @@ public class GraphAdjucencyList {
 		//mark source as visited
 		visited[src] = true;
 		
-		Iterator<UDEdge> list = udEdgeList.get(src).listIterator();
-		
-		while (list.hasNext()) {
-			UDEdge e = list.next();
-			
+		udEdgeList.get(src).forEach( e -> {
 			int v = e.ver;
 			int w = e.weight;
 			//if vertex is already there then there is cycle and we ignore that
-			if (visited[v])
-				continue;
-			
-			//if current weight is more than k return true
-			if (w>k)
-				return true;
-			
-			//else add this vertex to visited
-			visited[v] = true;
-			
-			//call same function in recursion and check if this vertex can provide path > k
-			if (isPathGreaterThanK(v, k, visited))
-				return true;
-			
-			//backtrack
-			visited[v] = false;
-		}
-		
+			if (!visited[v]) {
+
+				//if current weight is more than k return true
+				if (w > k)
+					return true;
+
+				//else add this vertex to visited
+				visited[v] = true;
+
+				//call same function in recursion and check if this vertex can provide path > k
+				if (isPathGreaterThanK(v, k - w, visited))
+					return true;
+
+				//backtrack
+				visited[v] = false;
+			}
+		});
+
 		//if no adjacent could provide path return false
 		return false;
 		

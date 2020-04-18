@@ -1,3 +1,4 @@
+
 package ds.LinkedList;
 
 import java.util.HashMap;
@@ -11,10 +12,12 @@ public class LinkedList {
 	pointNode phead;
 	doubleNode dhead;
 	
-	/*Add Node at front of linked list
+	*/
+/*Add Node at front of linked list
 	 * i.e. new node becomes head of linked list
 	 * Time complexity - O(1)
-	 */
+	 *//*
+
 	
 	public void push(int new_data){
 		//create new node for new data passed in input
@@ -25,9 +28,11 @@ public class LinkedList {
 		head = newNode;
 	}
 	
-	/*
+	*/
+/*
 	 * Insert node after given node i.e. in between linked list
-	 */
+	 *//*
+
 	
 	public void insertAfter(Node prev_node, int new_data){
 		//check if previous node is not empty
@@ -44,9 +49,11 @@ public class LinkedList {
 		prev_node.next = newNode;
 	}
 	
-	/*
+	*/
+/*
 	 * Append node at last of linked list
-	 */
+	 *//*
+
 	public void append(Node lastNode, int new_data){
 		
 		Node newNode = new Node(new_data);
@@ -65,9 +72,11 @@ public class LinkedList {
 		return;
 	}
 	
-	/*
+	*/
+/*
 	 * delete node whose data is equal to data passed in input
-	 */
+	 *//*
+
 	public void deleteNode(int key){
 		//if head itself contains key then 
 		if (head.data == key)
@@ -89,9 +98,11 @@ public class LinkedList {
 	}
 	
 	
-	/*
+	*/
+/*
 	 * delete node present at position passed in input
-	 */
+	 *//*
+
 	
 	public void deletePosition(int position){
 		
@@ -112,10 +123,35 @@ public class LinkedList {
 		
 		prev.next = temp.next;
 	}
-	
-	/*
+
+    */
+/* delete nth node from end
+     *//*
+
+
+    public Node removeNthFromEnd(Node head, int n) {
+        Node dummy = new Node(0);
+        dummy.next = head;
+        Node first = dummy;
+        Node second = dummy;
+        // Advances first pointer so that the gap between first and second is n nodes apart
+        for (int i = 1; i <= n + 1; i++) {
+            first = first.next;
+        }
+        // Move first to the end, maintaining the gap
+        while (first != null) {
+            first = first.next;
+            second = second.next;
+        }
+        second.next = second.next.next;
+        return dummy.next;
+    }
+
+	*/
+/*
 	 * reverse linked list
-	 */
+	 *//*
+
 	public static Node reverse(Node node){
 
 		Node prev = null;
@@ -132,9 +168,11 @@ public class LinkedList {
 		return node;
 	}
 	
-	/*
+	*/
+/*
 	 * Reverse Linked List in groups of given data
-	 */
+	 *//*
+
 	public static Node reverseSize(Node head, int k){
 		Node prev = null;
 		Node current = head;
@@ -157,14 +195,16 @@ public class LinkedList {
 		return prev;
 	}
 	
-	/* Reorder linked list - given linked list L0->L1->L2->L3->...->Ln-1->Ln
+	*/
+/* Reorder linked list - given linked list L0->L1->L2->L3->...->Ln-1->Ln
 	 * output L0→Ln→L1→Ln-1→L2→Ln-2→...
 	 * In-place - i.e. not creating result linked list (extra memory)
 	 * algorithm
 	 * 1. Break list in the middle to two lists (use fast & slow pointers)
 	 * 2. Reverse the order of the second list
 	 * 3. Merge two list back together
-	 */
+	 *//*
+
 	
 	public static void reorderList(Node head) {
 		 
@@ -174,12 +214,10 @@ public class LinkedList {
 			Node fast = head;
  
 			//use a fast and slow pointer to break the link to two parts.
-			while (fast != null && fast.next != null && fast.next.next!= null) {
+			while (fast.next != null && fast.next.next!= null) {
 				//why need third/second condition?
-				System.out.println("pre "+slow.data + " " + fast.data);
 				slow = slow.next;
 				fast = fast.next.next;
-				System.out.println("after " + slow.data + " " + fast.data);
 			}
  
 			Node second = slow.next;
@@ -207,9 +245,11 @@ public class LinkedList {
 		}
 	}
 	
-	/* Determine if Linked list has cycle
+	*/
+/* Determine if Linked list has cycle
 	 * If it has fast pointer will definitely meet slow at that point 
-	 */
+	 *//*
+
 	public boolean hasCycle(Node head) {
         Node fast = head;
         Node slow = head;
@@ -225,10 +265,12 @@ public class LinkedList {
         return false;
     }
 	
-	/*Copy Linked list random pointer
+	*/
+/*Copy Linked list random pointer
 	 * A linked list is given such that each node contains an additional random pointer 
 	 * which could point to any node in the list or null
-	 */
+	 *//*
+
 	
 	public RandomListNode copyRandomList(RandomListNode head) {
 		if (head == null)
@@ -251,7 +293,7 @@ public class LinkedList {
 	 
 		p = head;
 		q = newHead;
-		while (p != null) {
+		while (p != null) {    // I believe This logic can be combined in while loop above - i.e. assign q.next and q.random in same
 			if (p.random != null)
 				q.random = map.get(p.random);
 			else
@@ -264,7 +306,9 @@ public class LinkedList {
 		return newHead;
 	}
 	
-	/* Merge two sorted lists */
+	*/
+/* Merge two sorted lists *//*
+
 	
 	public Node mergeTwoLists(Node l1, Node l2) {
 	    Node head = new Node(0);
@@ -292,10 +336,12 @@ public class LinkedList {
 	    return head.next;
 	}
 	
-	/* Oddeven list
+	*/
+/* Oddeven list
 	 * Given a singly linked list, group all odd nodes together followed by the even nodes. 
 	 * Please note here we are talking about the node number and not the value in the nodes.
-	 */
+	 *//*
+
 	public Node oddEvenList(Node head){
 		if (head == null)
 				return head;
@@ -318,8 +364,10 @@ public class LinkedList {
 	}
 	
 	
-	/* Remove duplicates from sorted list
-	 */
+	*/
+/* Remove duplicates from sorted list
+	 *//*
+
 	
     public Node deleteDuplicates(Node head) {
 	        if(head == null || head.next == null)
@@ -328,19 +376,20 @@ public class LinkedList {
 	        Node p = head;
 	 
 	        while( p!= null && p.next != null){
-	            if(p.data == p.next.data){
-	                p.next = p.next.next;
-	            }else{
-	                p = p.next; 
-	            }
+	            if(p.data == p.next.data) {
+                    p.next = p.next.next;
+                }
+                p = p.next;
 	        }
 	 
 	        return head;
     }
 	
-	/* Remove nodes/values which are duplicates from list leaving only distinct members
+	*/
+/* Remove nodes/values which are duplicates from list leaving only distinct members
 	 * 
-	 */
+	 *//*
+
 	
 	public Node keepOnlyDistinct(Node head) {
 	    Node t = new Node(0);
@@ -365,11 +414,13 @@ public class LinkedList {
 	    return t.next;
 	}
 	
-	/* Partition list 
+	*/
+/* Partition list
 	 * Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
 		You should preserve the original relative order of the nodes in each of the two partitions.
 		For example, given 1->4->3->2->5->2 and x = 3, return 1->2->2->4->3->5
-	 */
+	 *//*
+
 	
 	public Node partition(Node head, int x) {
         if(head == null) return null;
@@ -404,8 +455,10 @@ public class LinkedList {
         return fakeHead1.next;
     }
 	
-	/* Intersection of two singly linked list
-	 */
+	*/
+/* Intersection of two singly linked list
+	 *//*
+
 	public Node getIntersectionNode(Node headA, Node headB) {
         int len1 = 0;
         int len2 = 0;
@@ -458,9 +511,11 @@ public class LinkedList {
 	// another way to do this is add first list to HashSet. Then for each node in 2nd list,
 	// check if hashset contains that value if yes then return that from 2nd list as intersection node
 	
-	/* Swap nodes in pairs
+	*/
+/* Swap nodes in pairs
 	 * For example, given 1->2->3->4, you should return the list as 2->1->4->3
-	 */
+	 *//*
+
 	
 	public Node swapPairs(Node head) {
 	    if(head==null || head.next==null)
@@ -491,7 +546,9 @@ public class LinkedList {
 	    return h.next;
 	}
 	
-	/* Utility function for calculating length of linked list */
+	*/
+/* Utility function for calculating length of linked list *//*
+
     public int countNodes()
     {
         int count = 0;
@@ -504,8 +561,10 @@ public class LinkedList {
         return count;
     }
     
-    /* Function for swapping kth nodes from both ends of
-    linked list */
+    */
+/* Function for swapping kth nodes from both ends of
+    linked list *//*
+
 	 public void swapKth(int k)
 	 {
 	     // Count nodes in linked list
@@ -569,8 +628,10 @@ public class LinkedList {
 	         head = x;
 	 }
 	
-	/* Sort linked list which is already sorted on absolute values
-	 */
+	*/
+/* Sort linked list which is already sorted on absolute values
+	 *//*
+
 	
 	// To sort a linked list by actual values.
     // The list is assumed to be sorted by absolute
@@ -610,7 +671,9 @@ public class LinkedList {
 	    return head;
 	}
 	
-	/* Check if a linked list of strings forms a palindrome */
+	*/
+/* Check if a linked list of strings forms a palindrome *//*
+
 	
 	// Returns true if string formed by linked
     // list is palindrome
@@ -630,16 +693,52 @@ public class LinkedList {
         //return isPalidromeUtil(str);    // this functions is implemented in ArrayString
         return true;   // this is just compilation replacement of isPalidromeUtil(str) method 
     }
+
+	*/
+/* one more way to ind if liked list is palindrome or not *//*
+
+	public boolean isPalindrome(Node head) {
+		if(head == null)
+			return true;
+
+		Node p = head;
+		Node prev = new Node(head.data);
+
+		while(p.next != null){
+			Node temp = new Node(p.next.data);
+			temp.next = prev;
+			prev = temp;
+			p = p.next;
+		}
+
+		Node p1 = head;
+		Node p2 = prev;
+
+		while(p1!=null){
+			if(p1.data != p2.data)
+				return false;
+
+			p1 = p1.next;
+			p2 = p2.next;
+		}
+
+		return true;
+	}
+
     
-    /* Find a triplet from three linked lists with sum equal to a given number
+    */
+/* Find a triplet from three linked lists with sum equal to a given number
      * Lets assume we have three lists a,b,c. We can sort b in ascending order and c in descending order
      * Then loop through each element of a, for which try to find pair in b and c using loop which will match given number
-     */
+     *//*
+
     
-    /* A function to chech if there are three elements in a, b
+    */
+/* A function to check if there are three elements in a, b
     and c whose sum is equal to givenNumber.  The function
     assumes that the list b is sorted in ascending order and
-    c is sorted in descending order. */
+    c is sorted in descending order. *//*
+
 	 public boolean isSumSorted(LinkedList la, LinkedList lb, LinkedList lc,
 	                     int givenNumber)
 	 {
@@ -675,12 +774,14 @@ public class LinkedList {
 	    return false;
 	 }
 	 
-	 /* Implement merge sort for Linked List 
+	 */
+/* Implement merge sort for Linked List
 	  * It includes 3 functions
 	  * 1) mergeSort(Node node) - it looks through list and calls next two functions. It uses recursion to merge
 	  * 2) getMiddle(Node node) - it gives back middle element for passed list
 	  * 3) sortedMerge(Node n1, Node n2) - merge two input lists
-	  */
+	  *//*
+
 	 
 	 public Node mergeSort(Node h) 
 	    {
@@ -734,13 +835,17 @@ public class LinkedList {
 	    public Node sortedMerge(Node a, Node b) 
 	    {
 	        Node result = null;
-	        /* Base cases */
+	        */
+/* Base cases *//*
+
 	        if (a == null)
 	            return b;
 	        if (b == null)
 	            return a;
 	 
-	        /* Pick either a or b, and recur */
+	        */
+/* Pick either a or b, and recur *//*
+
 	        if (a.data <= b.data) 
 	        {
 	            result = a;
@@ -755,9 +860,11 @@ public class LinkedList {
 	 
 	    }
 	 
-	    /* Rotate a Linked List 
+	    */
+/* Rotate a Linked List
 	     * 10->20->30->40->50->60 k = 4; 50->60->10->20->30->40
-	     */
+	     *//*
+
 	    // This function rotates a linked list counter-clockwise
 	    // and updates the head. The function assumes that k is
 	    // smaller than size of linked list. It doesn't modify
@@ -808,19 +915,27 @@ public class LinkedList {
 	    }
     
     
-	    /* Flatten a multilevel linked list */
+	    */
+/* Flatten a multilevel linked list *//*
+
 	    
-	    /* The main function that flattens a multilevel linked list */
+	    */
+/* The main function that flattens a multilevel linked list *//*
+
 	    public void flattenList(flatNode node) {
 	         
-	        /*Base case*/
+	        */
+/*Base case*//*
+
 	        if (node == null) {
 	            return;
 	        }
 	         
 	        flatNode tmp = null;
 	 
-	        /* Find tail node of first level linked list */
+	        */
+/* Find tail node of first level linked list *//*
+
 	        flatNode tail = node;
 	        while (tail.next != null) {
 	            tail = tail.next;
@@ -850,14 +965,16 @@ public class LinkedList {
 	        }
 	    }
 	    
-	    /* Given a linked list of line segments, remove middle points
+	    */
+/* Given a linked list of line segments, remove middle points
 	     * i/p - (0,10)->(1,10)->(5,10)->(7,10)
                                   |
                                 (7,5)->(20,5)->(40,5)
             o/p - (0,10)->(7,10)
                   |
                 (7,5)->(40,5)                    
-	     */
+	     *//*
+
 	    // This function deletes middle nodes in a sequence of
 	    // horizontal and vertical line segments represented
 	    // by linked list.
@@ -926,10 +1043,12 @@ public class LinkedList {
 	        return phead;
 	    }
 	    
-	    /* Rearrange a Linked List in Zig-Zag fashion
+	    */
+/* Rearrange a Linked List in Zig-Zag fashion
 	     * Given a linked list, rearrange it such that converted list should be of the form a < b > c < d > e < f .. 
 	     * where a, b, c.. are consecutive data node of linked list
-	     */
+	     *//*
+
 	    
 	    // This function distributes the Node in zigzag fashion
 	    public void zigZagList(Node head)
@@ -942,36 +1061,50 @@ public class LinkedList {
 	        Node current = head;
 	        while (current.next != null)
 	        {
-	            if (flag)  /* "<" relation expected */
+	            if (flag)  */
+/* "<" relation expected *//*
+
 	            {
-	                /* If we have a situation like A > B > C
+	                */
+/* If we have a situation like A > B > C
 	                   where A, B and C are consecutive Nodes
 	                   in list we get A > B < C by swapping B
-	                   and C */
+	                   and C *//*
+
 	                if (current.data > current.next.data) {
 	                    //swap(current.data, current.next.data);  /
 	                }	
 	            }
-	            else /* ">" relation expected */
+	            else */
+/* ">" relation expected *//*
+
 	            {
-	                /* If we have a situation like A < B < C where
+	                */
+/* If we have a situation like A < B < C where
 	                   A, B and C  are consecutive Nodes in list we
-	                   get A < C > B by swapping B and C */
+	                   get A < C > B by swapping B and C *//*
+
 	                if (current.data < current.next.data) {
 	                    //swap(current.data, current.next.data);
 	                }	
 	            }
 	     
 	            current = current.next;
-	            flag = !flag;  /* flip flag for reverse checking */
+	            flag = !flag;  */
+/* flip flag for reverse checking *//*
+
 	        }
 	    }
 	    
 	    ///////////////////////////////////////////////////////////////////////////////////////////
 	    ///               Circular Linked List      /////////////////////////////////
 	    /////////////////////////////////////////////////////////////////////////////
-	    /* circular list traversal */
-	    /* Function to traverse a given Circular linked list and print nodes */
+	    */
+/* circular list traversal *//*
+
+	    */
+/* Function to traverse a given Circular linked list and print nodes *//*
+
 	    public void printList(Node first)
 	    {
 	        Node temp = first; 
@@ -989,11 +1122,15 @@ public class LinkedList {
 	        }
 	    }
 	    
-	    /* Divide circular list into 2 halves */
+	    */
+/* Divide circular list into 2 halves *//*
+
 	    
-	    /* Function to split a list (starting with head) into two lists.
+	    */
+/* Function to split a list (starting with head) into two lists.
 	     head1_ref and head2_ref are references to head nodes of 
-	     the two resultant linked lists */
+	     the two resultant linked lists *//*
+
 	    public void splitList() {
 	        Node slow_ptr = head;
 	        Node fast_ptr = head;
@@ -1002,38 +1139,54 @@ public class LinkedList {
 	            return;
 	        }
 	 
-	        /* If there are odd nodes in the circular list then
+	        */
+/* If there are odd nodes in the circular list then
 	         fast_ptr->next becomes head and for even nodes 
-	         fast_ptr->next->next becomes head */
+	         fast_ptr->next->next becomes head *//*
+
 	        while (fast_ptr.next != head
 	                && fast_ptr.next.next != head) {
 	            fast_ptr = fast_ptr.next.next;
 	            slow_ptr = slow_ptr.next;
 	        }
 	 
-	        /* If there are even elements in list then move fast_ptr */
+	        */
+/* If there are even elements in list then move fast_ptr *//*
+
 	        if (fast_ptr.next.next == head) {
 	            fast_ptr = fast_ptr.next;
 	        }
 	 
-	        /* Set the head pointer of first half */
+	        */
+/* Set the head pointer of first half *//*
+
 	        Node head1 = head;
 	 
-	        /* Set the head pointer of second half */
+	        */
+/* Set the head pointer of second half *//*
+
 	        if (head.next != head) {
 	            Node head2 = slow_ptr.next;
 	        }
-	        /* Make second half circular */
+	        */
+/* Make second half circular *//*
+
 	        fast_ptr.next = slow_ptr.next;
 	 
-	        /* Make first half circular */
+	        */
+/* Make first half circular *//*
+
 	        slow_ptr.next = head;
 	    }
 	    
-	    /* Sorted insert for circular linked list */
-	    /* function to insert a new_node in a list in sorted way.
+	    */
+/* Sorted insert for circular linked list *//*
+
+	    */
+/* function to insert a new_node in a list in sorted way.
 	     Note that this function expects a pointer to head node
-	     as this can modify the head of the input linked list */
+	     as this can modify the head of the input linked list *//*
+
 	    public void sortedInsert(Node new_node)
 	    {
 	        Node current = head;
@@ -1050,8 +1203,10 @@ public class LinkedList {
 	        else if (current.data >= new_node.data)
 	        {
 	 
-	            /* If value is smaller than head's value then
-	             we need to change next of last node */
+	            */
+/* If value is smaller than head's value then
+	             we need to change next of last node *//*
+
 	            while (current.next != head)
 	                current = current.next;
 	 
@@ -1064,7 +1219,9 @@ public class LinkedList {
 	        else
 	        {
 	 
-	            /* Locate the node before the point of insertion */
+	            */
+/* Locate the node before the point of insertion *//*
+
 	            while (current.next != head &&
 	                   current.next.data < new_node.data)
 	                current = current.next;
@@ -1073,13 +1230,17 @@ public class LinkedList {
 	            current.next = new_node;
 	        }
 	    }
-	    
-	    /////////////////////////////////////////////////////////////////////////////
-	    ///               Doubly Linked List        /////////////////////////////////
-	    /////////////////////////////////////////////////////////////////////////////
-	    /* Given a reference (pointer to pointer) to the head of a list
-	    and an int, inserts a new node on the front of the list. */
-		 /*public void push(doubleNode head_ref, int new_data)
+
+		            del.prev.next = del.next;
+	/////////////////////////////////////////////////////////////////////////////
+	///               Doubly Linked List        /////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+	    */
+/* Given a reference (pointer to pointer) to the head of a list
+	    and an int, inserts a new node on the front of the list. *//*
+
+		 */
+/*public void push(doubleNode head_ref, int new_data)
 		 {
 		      1. allocate node 
 		     //doubleNode new_node = (doubleNode) malloc(sizeof(doubleNode));
@@ -1097,68 +1258,101 @@ public class LinkedList {
 		  
 		      5. move the head to point to the new node 
 		     (*head_ref)    = new_node;
-		 }*/
+		 }*//*
+
 		 
-		 /*Function to delete a node in a Doubly Linked List.
+		 */
+/*Function to delete a node in a Doubly Linked List.
 		    head_ref --> pointer to head node pointer.
-		    del  -->  pointer to node to be deleted. */
-		    void deleteNode(doubleNode head_ref, doubleNode del) {
+		    del  -->  pointer to node to be deleted. *//*
+
+
+	void deleteNode(doubleNode head_ref, doubleNode del) {
+
+		*/
+/* base case *//*
+
+		if (dhead == null || del == null) {
+			return;
+		}
+
+		*/
+/* If node to be deleted is head node *//*
+
+		if (dhead == del) {
+			dhead = del.next;
+		}
+
+		*/
+/* Change next only if node to be deleted is NOT the last node *//*
+
+		if (del.next != null) {
+			del.next.prev = del.prev;
+		}
+
+		*/
+/* Change prev only if node to be deleted is NOT the first node *//*
+
+		if (del.prev != null) {
+		}
 		 
-		        /* base case */
-		        if (dhead == null || del == null) {
-		            return;
-		        }
-		 
-		        /* If node to be deleted is head node */
-		        if (dhead == del) {
-		            dhead = del.next;
-		        }
-		 
-		        /* Change next only if node to be deleted is NOT the last node */
-		        if (del.next != null) {
-		            del.next.prev = del.prev;
-		        }
-		 
-		        /* Change prev only if node to be deleted is NOT the first node */
-		        if (del.prev != null) {
-		            del.prev.next = del.next;
-		        }
-		 
-		        /* Finally, free the memory occupied by del*/
+		        */
+/* Finally, free the memory occupied by del*//*
+
 		        return;
 		    }
 		    
-		    /* UTILITY FUNCTIONS */
-		    /* Function to insert a node at the beginning of the Doubly Linked List */
+		    */
+/* UTILITY FUNCTIONS *//*
+
+		    */
+/* Function to insert a node at the beginning of the Doubly Linked List *//*
+
 		    void pushBeginning(doubleNode head_ref, int new_data) {
 		 
-		        /* allocate node */
+
+/* allocate node *//*
+
 		        doubleNode new_node = new doubleNode(new_data);
 		 
-		        /* since we are adding at the begining,
-		         prev is always NULL */
+
+ since we are adding at the begining,
+		         prev is always NULL *//*
+
 		        new_node.prev = null;
 		 
-		        /* link the old list off the new node */
+
+ link the old list off the new node *//*
+
 		        new_node.next = (dhead);
 		 
-		        /* change prev of head node to new node */
+
+ change prev of head node to new node *//*
+
 		        if ((dhead) != null) {
 		            (dhead).prev = new_node;
 		        }
 		 
-		        /* move the head to point to the new node */
+
+ move the head to point to the new node *//*
+
 		        (dhead) = new_node;
 		    }
 	    
-		    /* reverse doubly linked list */
-		    /* Function to reverse a Doubly Linked List */
+
+ reverse doubly linked list *//*
+
+
+ Function to reverse a Doubly Linked List *//*
+
 		    void reverse() {
 		        doubleNode temp = null;
 		        doubleNode current = dhead;
 		 
-		        /* swap next and prev for all nodes of 
-		         doubly linked list */
+
+ swap next and prev for all nodes of
+		         doubly linked list *//*
+
 		        while (current != null) {
 		            temp = current.prev;
 		            current.prev = current.next;
@@ -1166,10 +1360,14 @@ public class LinkedList {
 		            current = current.prev;
 		        }
 		 
-		        /* Before changing head, check for the cases like empty 
-		         list and list with only one node */
+
+ Before changing head, check for the cases like empty
+		         list and list with only one node *//*
+
 		        if (temp != null) {
 		            dhead = temp.prev;
 		        }
 		    }
+
 }
+

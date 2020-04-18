@@ -397,7 +397,7 @@ public class BinaryTree {
             System.out.print(node.key + " ");
         else if (level > 1) 
         {
-            if (ltr != false) 
+            if (ltr)
             {
             	printSpiralGivenLevel(node.left, level - 1, ltr);
             	printSpiralGivenLevel(node.right, level - 1, ltr);
@@ -556,7 +556,7 @@ public class BinaryTree {
 	 }
     
 	 /*
-	  * return sum tree - node.key = node.left.key + node.roght.key
+	  * return sum tree - node.key = node.left.key + node.right.key
 	  */
 	 	// Convert a given tree to a tree where every node contains sum of
 	    // values of nodes in left and right subtrees in the original tree
@@ -1004,8 +1004,7 @@ public class BinaryTree {
 		for (int i=1; i<n;i++){
 				root = insertNodeBST(root, values[i]);
 		} 
-		
-		
+
 		Node node = findLCABST(root, node1, node2);
 		
 		int levelLCA = getLevel(root, node.key);
@@ -1015,6 +1014,56 @@ public class BinaryTree {
 		return level1 + level2 - 2*levelLCA; 
 		
 	}
+
+	/*
+	 * Find Lowest common ancestor in BST for given two nodes values.
+	 * Traverse through BST from root and find node which in inbetween given two nodes n1 <= n <= n2
+	 * 		If current node is less than two nodes (n < n1 && n < n2) then LCA lies on right side
+	 * 		If current node is greater than two nodes (n > n1 && n > n2) then LCA lies on left side.
+	 * 		if at start itself n1 < n < n2 then n is root.
+	 *
+	 */
+
+	public Node findLCABST(Node node, int n1, int n2){
+		if (node == null)
+			return null;
+
+		if (node.key > n1 && node.key > n2)
+			return findLCABST(node.left, n1, n2);
+
+		if (node.key < n1 && node.key < n2)
+			return findLCABST(node.right, n1, n2);
+
+		return node;
+	}
+
+	/* Better solution to get lca in binary tree is
+	 * search for either of two nodes
+	 * if any of two node is found we return that to parent of node
+	 * any time we have parent node who has not null from left and right side, it is common ancestor node
+	 */
+
+	public Node lca(Node root, Node n1, Node n2){
+
+		if (root == null)
+			return null;
+
+		if (root == n1 || root == n2)
+			return root;
+
+		Node left = lca(root.left, n1, n2);
+		Node right = lca(root.right, n1, n2);
+
+		if (left != null && right != null)
+			return root;
+
+		if (left == null && right == null)
+			return null;
+
+		return left != null ? left : right;
+
+	}
+
 	/*
 	 * Find predecessor and successor of key in BST
 	 * Node:- The maximum value(root.right) in left subtree is predecessor
@@ -1055,27 +1104,7 @@ public class BinaryTree {
 		}
 	}
 	
-	/*
-	 * Find Lowest common ancestor in BST for given two nodes values.
-	 * Traverse through BST from root and find node which in inbetween given two nodes n1 <= n <= n2
-	 * 		If current node is less than two nodes (n < n1 && n < n2) then LCA lies on right side
-	 * 		If current node is greater than two nodes (n > n1 && n > n2) then LCA lies on left side.
-	 * 		if at start itself n1 < n < n2 then n is root. 
-	 * 
-	 */
-	
-	public Node findLCABST(Node node, int n1, int n2){
-		if (node == null)
-			return null;
-		
-		if (node.key > n1 && node.key > n2)
-			return findLCABST(node.left, n1, n2);
-		
-		if (node.key < n1 && node.key < n2)
-			return findLCABST(node.right, n1, n2);
-		
-		return node;
-	}
+
 	
 	/* Find Lowest Common ancestor in "Binary Tree"
 	 * Since it is Binary Tree and not BST we can not use property that n1 < n < n2.
@@ -1122,33 +1151,7 @@ public class BinaryTree {
 		path.remove(root.key);
 		return false;
 	}
-	
-	/* Better solution to get lca in binary tree is 
-	 * search for either of two nodes
-	 * if any of two node is found we return that to parent of node
-	 * any time we have parent node who has not null from left and right side, it is common ancestor node
-	 */
-	
-	public Node lca(Node root, Node n1, Node n2){
-		
-		if (root == null)
-			return null;
-		
-		if (root == n1 || root == n2)
-			return root;
-		
-		Node left = lca(root.left, n1, n2);
-		Node right = lca(root.right, n1, n2);
-		
-		if (left != null && right != null)
-			return root;
-		
-		if (left == null && right == null)
-			return null;
-		
-		return left != null ? left : right;
-		
-	}
+
 	
 	/*
 	 * Find ceil for given key in BST
@@ -1173,18 +1176,25 @@ public class BinaryTree {
 	/*
 	 * validate BST
 	 * make sure root.left.key <= root.key && root.right.key >= root.key
-	 * here min = Integer.MAX_VALUE and max = Integer.MAX_VALUE
+	 * here min = Integer.MIN_VALUE and max = Integer.MAX_VALUE
 	 */
-	
-	public boolean isValidBST(Node root, int min, int max){
+
+	public boolean isValidBST(Node root) {
 		if (root == null)
 			return true;
-		
-		if (root.key <= min || root.key >= max)
+		return isValidBST(root, null, null);
+	}
+
+	public boolean isValidBST(Node root, Integer min, Integer max) {
+		if (root == null) {
+			return true;
+		}
+		if ((max != null && root.key >= max) || (min != null && root.key <= min)) {
 			return false;
-		
-		return isValidBST(root.left, min, root.key) && isValidBST(root.right, root.key, max);
-				
+		}
+
+		return isValidBST(root.left, min, root.key) &&
+				isValidBST(root.right, root.key, max);
 	}
 	
 	/*
@@ -1222,44 +1232,9 @@ public class BinaryTree {
 	
 	/*
 	 * PathSum - check if given tree has path (root to leaf) whos sum == given number.
-	 * This is usually BFS problem and can be solved using 2 queues 
-	 * One queue will store nodes and another will store values within nodes  
 	 */
 	
-	//this solutuion is not correct
-	public boolean hasSumPath(Node root, int sum){
-		if (root == null)
-			return false;
-		
-		//create two queues - linked list implementaion of queue
-		LinkedList<Node> nodes = new LinkedList<Node>();
-		LinkedList<Integer> values = new LinkedList<Integer>();
-		//add first node and its value to queues
-		nodes.add(root);
-		values.add(root.key);
-		
-		while(nodes != null) {
-			//retrieve current node and sum from 
-			Node curr = nodes.poll();
-			int sumValue = values.poll();
-			
-			//if its leaf node and sumVlaue = given sum return true
-			if (curr.left == null && curr.right == null && sumValue == sum)
-				return true;
-			
-			if(curr.left != null) {
-				nodes.add(curr.left);
-				values.add(sumValue + curr.left.key);
-			}
-			
-			if(curr.right != null){
-				nodes.add(curr.right);
-				values.add(sumValue + curr.right.key);
-			}
-			
-		}
-		return false;
-	}
+
 	//this is recursive solution for path sum problem
 	/* The basic idea is to subtract the value of current node from sum until it reaches a leaf node and the subtraction equals 0, 
 	 * then we know that we got a hit. Otherwise the subtraction at the end could not be 0
@@ -1303,7 +1278,7 @@ public class BinaryTree {
             // Update result if needed
             res = Math.max(res, ls + rs + node.key);
  
-            // Return maxium possible value for root being
+            // Return maximum possible value for root being
             // on one side
             return Math.max(ls, rs) + node.key;
         }
@@ -1609,7 +1584,7 @@ public class BinaryTree {
 	     {
 	         p.right.nextRight = getNextRight(p);
 	         connectRecur(p.right);
-	     } 
+	     }
 	     else
 	         connectRecur(getNextRight(p));
 	 }
@@ -1806,21 +1781,16 @@ public class BinaryTree {
 	    	if (root == null)
 	    		return 0;
 	    	
-	    	System.out.println("current root=" +root.key);
 	    	if (root.left == null && root.right == null)
 	    		return root.key;
 	    	
 	    	//update left and right subtree
-	    	System.out.println("calling left node=" +root.left.key);
 	    	int leftSum = updateTree(root.left);
-	    	System.out.println("calling right node=" +root.right.key);
 	    	int rightSum = updateTree(root.right);
 	    	
 	    	//add left sum to current node
-	    	System.out.println("root and left before addition=" +root.key +" and " +leftSum);
 	    	root.key += leftSum;
 	    	
-	    	System.out.println("returning value =" +root.key +"+" +rightSum);
 	    	//return sum of values under root
 	    	return root.key + rightSum;
 	    	
@@ -1958,6 +1928,78 @@ public class BinaryTree {
 	        count++;
 	        return true;
 	    }
+
+	    /* https://www.techiedelight.com/sink-nodes-containing-zero-bottom-binary-tree/
+	       - sink nodes of value zero to bottom
+	     */
+
+	// Main function to sink nodes having zero value to the bottom
+	// of the binary tree
+	public static void sinkNodes(Node root)
+	{
+		// base case: tree is empty
+		if (root == null) {
+			return;
+		}
+
+		// fix left subtree and right subtree first
+		sinkNodes(root.left);
+		sinkNodes(root.right);
+
+		// sink current node it has value 0
+		if (root.key == 0) {
+			sink(root);
+		}
+	}
+
+	// Function to sink root node having value 0 to the bottom of the tree
+	// The left and right subtree (if any) of root node are already sinked
+	public static void sink(Node root)
+	{
+		// base case: tree is empty
+		if (root == null) {
+			return;
+		}
+
+		// if left subtree exists & left child has non-zero value
+		if (root.left != null && root.left.key != 0)
+		{
+			// swap data of current node with its left child
+			int temp = root.key;
+			root.key = root.left.key;
+			root.left.key = temp;
+
+			// recur for left subtree
+			sink(root.left);
+		}
+
+		// if right subtree exists & right child has non-zero value
+		else if(root.right != null && root.right.key != 0)
+		{
+			// swap data of current node with its right child
+			int temp = root.key;
+			root.key = root.right.key;
+			root.right.key = temp;
+
+			// recur for right subtree
+			sink(root.right);
+		}
+	}
+
+	/* print leaf to root  - https://www.techiedelight.com/print-leaf-to-root-path-binary-tree/
+	 */
+
+	/* print cousins (different parent but same level) of given node - https://www.techiedelight.com/print-cousins-of-given-node-binary-tree/
+	 */
+
+	/* check if tree is complete binary tree or not - https://www.techiedelight.com/check-given-binary-tree-complete-binary-tree-not/
+	 */
+
+	/* print diagonal traversal - http://www.techiedelight.com/print-diagonal-traversal-binary-tree/
+	 */
+
+	/* https://www.techiedelight.com/determine-binary-tree-can-converted-another-number-swaps-left-right-child/azaaaaazazxde
+	 */
 }
 
  class Node  {

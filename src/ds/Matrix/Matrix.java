@@ -1,3 +1,4 @@
+/*
 package ds.Matrix;
 
 import java.util.HashMap;
@@ -6,9 +7,12 @@ import java.util.LinkedList;
 public class Matrix {
 
 	
-	/*
+
+/*
 	 * Print given matrix
-	 */
+	 *//*
+
+
 	
 	public void printMatrix(int m[][], int R, int C){
 	
@@ -19,7 +23,9 @@ public class Matrix {
 		}
 	}
 	
-	/*
+
+*/
+/*
 	 * Maximum size square sub matrix with all 1s
 	 * lets consider s[R][C] is sum matrix for m[R][C]
 	 * 1) Copy first row and first columns from M[R][C] to S[R][C]
@@ -31,23 +37,37 @@ public class Matrix {
 	 * 3) Find maximum entry in s[R][C]
 	 * 4) using value and coordinates of maximum entry in s[i], print sub matrix of m[][]
 	 */
+
+
 	
 	
 	public void printMaxSubSquare(int m[][], int R, int C){
 		int i , j;
 		int s[][] = new int[R][C];
 		
-		/*copy first column from m[][] to s[][]*/
+
+
+/*copy first column from m[][] to s[][]*/
+
+
 		for (i=0; i<R; i++){
 			s[i][0] = m[i][0];
 		}
 		
-		/*copy first row from m[][] to s[][]*/
+
+
+/*copy first row from m[][] to s[][]*/
+
+
 		for (j=0; j<C; j++ ){
 			s[0][j] = m [0][j];
 		}
 		
-		/*construct other entries of*/
+
+
+/*construct other entries of*/
+
+
 		for(i=1; i<R; i++)
 		{
 			for (j=1; j<C; j++){
@@ -57,7 +77,11 @@ public class Matrix {
 			}
 		}
 		
-		/* find maximum entry and its indexes in s[][] */
+
+
+/* find maximum entry and its indexes in s[][] */
+
+
 		int max_of_s = s[0][0]; 
 		int max_i = 0; 
 		int max_j = 0;
@@ -71,7 +95,11 @@ public class Matrix {
 			}
 		}
 		
-		/*print maximum size sub-matrix*/
+
+
+/*print maximum size sub-matrix*/
+
+
 		for (i= max_i; i > (max_i - max_of_s); i--) {
 			for (j = max_j; j > (max_j - max_of_s); j--) {
 				System.out.println("element at i=" +i+",j=" +j+" is="+m[i][j]);
@@ -88,37 +116,72 @@ public class Matrix {
 		return c;
 	}
 	
-	/*
+
+
+/*
 	 * inPlace (Fixed space) transpose of matrix
 	 * Too difficult - try later
 	 * http://www.geeksforgeeks.org/inplace-m-x-n-size-matrix-transpose/
-	 */
+	 *//*
+*/
+/*
+
 	
-	/*
-	 * Print matrix diagonally 
+	*//*
+
+*/
+/*
+	 * Print matrix diagonally
 	 * m[R][C] will always have line 'R+C-1' when printed diagonally
-	 */
+	 *//*
+*/
+/*
+
 	public void diagonalOrder(int m[][], int R, int C){
 		
 		//In output no of lines will be (R+C-1) 
 		for (int line=1; line<=(R+C-1); line++){
 			
-			/* Get column index of first element in this line of output.
-			 * The index is 0 for first row lines and (line - R) for remaining */
+			*//*
+
+*/
+/* Get column index of first element in this line of output.
+			 * The index is 0 for first row lines and (line - R) for remaining *//*
+*/
+/*
+
 			int start_col = Math.max(0, line - R);
 			
-			/* Get count of elements in this line. The count of element is equal to 
-			 * minimum of line number, C-start_col and R */
+			*//*
+
+*/
+/* Get count of elements in this line. The count of element is equal to
+			 * minimum of line number, C-start_col and R *//*
+*/
+/*
+
 			 int count = min(line, (C - start_col), R);
 			
-			 /*Print elements of this line*/
+			 *//*
+
+*/
+/*Print elements of this line*//*
+*/
+/*
+
 			 for (int j=0; j<count; j++)
 				 System.out.println(m[Math.min(R, line)-j-1][start_col+j]);
 		}
 	}
 	
-	/* Matrix multiplication - O(N^3)
-	 */
+	*//*
+
+*/
+/* Matrix multiplication - O(N^3)
+	 *//*
+*/
+/*
+
 	
 	public void multiply(int a[][], int b[][], int c[][], int n){
 		
@@ -132,37 +195,67 @@ public class Matrix {
 		}
 	}
 	
-	/*
+	*//*
+
+*/
+/*
 	 * Print matrix in spiral format/insert 'X' and '0' in spiral format
-	 */
+	 *//*
+*/
+/*
+
 	public void spiralFormat(String a[][], int re, int ce) {
 		
 		int i, rs=0, cs=0;
 		String insertChar = "";
-		/*  rs - starting row index
+		*//*
+
+*/
+/*  rs - starting row index
         	re - ending row index
         	cs - starting column index
         	ce - ending column index
         	i - iterator
-		 */
+		 *//*
+*/
+/*
+
 		
 		while (rs<re && cs<ce){
 			
-			/* print first row form remaining rows */
+			*//*
+
+*/
+/* print first row form remaining rows *//*
+*/
+/*
+
 			for (i=cs; i<ce; i++){
 				System.out.println(a[rs][i]);
 			//	a[k][i] = insertChar;
 			}
 			rs++;
 			
-			/* print last column from remaining columns */
+			*//*
+
+*/
+/* print last column from remaining columns *//*
+*/
+/*
+
 			for (i=rs; i<re; i++){
 				System.out.println(a[i][ce-1]);
 				//a[i][n-1] = insertChar;  
 			}
 			ce--;
 			
-			/*print last row from remaining rows */
+			*//*
+
+*/
+/*print last row from remaining rows *//*
+*/
+/*
+
 			if (rs < re){
 				for (i = ce-1 ; i >= cs; i--){
 					System.out.println(a[re-1][i]);
@@ -171,7 +264,13 @@ public class Matrix {
 			}
 			re--;
 			
-			/*print first column from remaining column*/
+			*//*
+
+*/
+/*print first column from remaining column*//*
+*/
+/*
+
 			if (cs<ce){
 				for (i=re-1; i>=rs; i--){
 					System.out.println(a[i][cs]);
@@ -184,14 +283,57 @@ public class Matrix {
 			insertChar = ((insertChar == "0") ? "X" : "0");
 		}
 	}
+
+	*//*
+
+*/
+/* binary search in matrix- check if given target exist
+	 *//*
+*/
+/*
+
+
+	public boolean searchMatrix(int[][] matrix, int target) {
+		if(matrix==null || matrix.length==0 || matrix[0].length==0)
+			return false;
+
+		int m = matrix.length;
+		int n = matrix[0].length;
+
+		int start = 0;
+		int end = m*n-1;
+
+		while(start<=end){
+			int mid=(start+end)/2;
+			int midX=mid/n;        // divide by {column} gives row number
+			int midY=mid%n;        // modulo by {column} gives column number
+
+			if(matrix[midX][midY]==target)
+				return true;
+
+			if(matrix[midX][midY]<target){
+				start=mid+1;
+			}else{
+				end=mid-1;
+			}
+		}
+
+		return false;
+	}
 	
-	/*
+	*//*
+
+*/
+/*
 	 * Print all elements in sorted order from row and column wise sorted matrix
 	 * It involves 3 methods - Young Tableu algorithm
 	 * 1) printSortedOrder(int m[][], int n)
 	 * 2) extractMin(int m[][], int n)
 	 * 3) youngify(int m[][], int r, int c)
-	 */
+	 *//*
+*/
+/*
+
 	
 	public void printSorted(int m[][], int n){
 		for (int i=0; i<n*n; i++)
@@ -230,10 +372,16 @@ public class Matrix {
 	    }
 	}
 	
-	/*
-	 * Count no of rectangles in given matrix when rectangle is represented by 'X' and atleast one line 
+	*//*
+
+*/
+/*
+	 * Count no of rectangles in given matrix when rectangle is represented by 'X' and atleast one line
 	 * should have only 'O'
-	 */
+	 *//*
+*/
+/*
+
 	
 	public int countIslands(int m[][], int r, int c)
 	{
@@ -259,17 +407,23 @@ public class Matrix {
 	    return count;
 	}
 	
-	/*
+	*//*
+
+*/
+/*
 	 * find the largest rectangle of 1's with swapping of columns allowed
 	 * 
-	 */
+	 *//*
+*/
+/*
+
 	
 	// Returns area of the largest rectangle of 1's
-	/*public int maxArea(Integer mat[][], int r, int c)
+	public int maxArea(Integer mat[][], int r, int c)
 	{
 	    // An auxiliary array to store count of consecutive 1's
 	    // in every column.
-	    public int[][] hist = new int[r+1][c+1];
+        int[][] hist = new int[r+1][c+1];
 	 
 	    // Step 1: Fill the auxiliary array hist[][]
 	    for (int i=0; i<c; i++)
@@ -323,16 +477,65 @@ public class Matrix {
 	        }
 	    }
 	    return max_area;
-	}*/
-	
-	/*
+	}
+
+	*//*
+
+*/
+/* minimum path sum - minimum sum from top left to bottom right using dynamic programming
+	 *//*
+*/
+/*
+
+	public int minPathSum(int[][] grid) {
+		if(grid == null || grid.length==0)
+			return 0;
+
+		int m = grid.length;
+		int n = grid[0].length;
+
+		int[][] dp = new int[m][n];
+		dp[0][0] = grid[0][0];
+
+		// initialize top row
+		for(int i=1; i<n; i++){
+			dp[0][i] = dp[0][i-1] + grid[0][i];
+		}
+
+		// initialize left column
+		for(int j=1; j<m; j++){
+			dp[j][0] = dp[j-1][0] + grid[j][0];
+		}
+
+		// fill up the dp table
+		for(int i=1; i<m; i++){
+			for(int j=1; j<n; j++){
+				if(dp[i-1][j] > dp[i][j-1]){
+					dp[i][j] = dp[i][j-1] + grid[i][j];
+				}else{
+					dp[i][j] = dp[i-1][j] + grid[i][j];
+				}
+			}
+		}
+
+		return dp[m-1][n-1];
+	}
+
+
+	*//*
+
+*/
+/*
 	 * validity of given Tic-Tac-Toe board
 	 * 1) countX == countO || countX == countO + 1
 	 * 2) if o is in win condition then check 
 	 *    a) if x is also in win condition  /// then it is invalid
 	 *    b) if countX != countO  /// then it is invalid
 	 * 3) If x is in win condition then check if countX == countO + 1. If not then it is invalid   
-	 */
+	 *//*
+*/
+/*
+
 	
 	//Combination of winning indexes on board
 	public int win[][] = {{0,1,2},
@@ -393,13 +596,19 @@ public class Matrix {
 	    return false;
 	}
 	
-	/* Boolean matrix question 
+	*//*
+
+*/
+/* Boolean matrix question
 	 * Given a boolean matrix mat[M][N] of size M X N, modify it such that if a matrix cell mat[i][j] is 1 (or true) then make all the cells of ith row and jth column as 1
 	algorithm 
 	1) Create two temporary arrays row[M] and col[N]. Initialize all values of row[] and col[] as 0.
 	2) Traverse the input matrix mat[M][N]. If you see an entry mat[i][j] as true, then mark row[i] and col[j] as true.
 	3) Traverse the input matrix mat[M][N] again. For each entry mat[i][j], check the values of row[i] and col[j]. If any of the two values (row[i] or col[j]) is true, then mark mat[i][j] as true
-	*/
+	*//*
+*/
+/*
+
 	public void modifyMatrix(Boolean mat[][], int R, int C)
 	{
 	    Boolean[] row = new Boolean[R];
@@ -408,22 +617,40 @@ public class Matrix {
 	    int i, j;
 	 
 	 
-	    /* Initialize all values of row[] as 0 */
+	    *//*
+
+*/
+/* Initialize all values of row[] as 0 *//*
+*/
+/*
+
 	    for (i = 0; i < R; i++)
 	    {
 	       row[i] = false;
 	    }
 	 
 	 
-	    /* Initialize all values of col[] as 0 */
+	    *//*
+
+*/
+/* Initialize all values of col[] as 0 *//*
+*/
+/*
+
 	    for (i = 0; i < C; i++)
 	    {
 	       col[i] = false;
 	    }
 	 
 	 
-	    /* Store the rows and columns to be marked as 1 in row[] and col[]
-	       arrays respectively */
+	    *//*
+
+*/
+/* Store the rows and columns to be marked as 1 in row[] and col[]
+	       arrays respectively *//*
+*/
+/*
+
 	    for (i = 0; i < R; i++)
 	    {
 	        for (j = 0; j < C; j++)
@@ -436,8 +663,14 @@ public class Matrix {
 	        }
 	    }
 	 
-	    /* Modify the input matrix mat[] using the above constructed row[] and
-	       col[] arrays */
+	    *//*
+
+*/
+/* Modify the input matrix mat[] using the above constructed row[] and
+	       col[] arrays *//*
+*/
+/*
+
 	    for (i = 0; i < R; i++)
 	    {
 	        for (j = 0; j < C; j++)
@@ -450,10 +683,16 @@ public class Matrix {
 	    }
 	}
 	
-	/* print common elements from matrix 
+	*//*
+
+*/
+/* print common elements from matrix
 	 * print elements which are present in all rows 
 	 * time complexity is O(mn)
-	 */
+	 *//*
+*/
+/*
+
 	
 	public void printColumn(int mat[][]){
 		
@@ -484,9 +723,15 @@ public class Matrix {
 		
 	}
 	
-	/* Find sum of all elements in a matrix except the elements in row and/or column of given cell?
+	*//*
+
+*/
+/* Find sum of all elements in a matrix except the elements in row and/or column of given cell?
 	 * Time complexity - R*C+n(where n = arr[].length)
-	 */
+	 *//*
+*/
+/*
+
 	
 	public int printSums(int mat[][], Cell arr[], int n){
 		
@@ -515,8 +760,14 @@ public class Matrix {
 		return sum;
 	}
 	
-	/* Find common elements in all rows of given row-wise sorted matrix
-	 */
+	*//*
+
+*/
+/* Find common elements in all rows of given row-wise sorted matrix
+	 *//*
+*/
+/*
+
 	public int findCommonElement(int mat[][]){
 		int R = mat.length;
 		int C = mat[0].length;
@@ -564,11 +815,17 @@ public class Matrix {
 		return -1;
 	}
 	
-	/* No of paths with exactly k coins
+	*//*
+
+*/
+/* No of paths with exactly k coins
 	 * (0,0) -> (m,n)
 	 * recursive function -> time complexity is exponential
 	 * using dynamic programming we can memoize result in 3D array dp[m][n][k] to store result. TimeCom -> m*n*k
-	 */
+	 *//*
+*/
+/*
+
 	
 	public int pathCoins(int mat[][], int r, int c, int k){
 		
@@ -576,7 +833,7 @@ public class Matrix {
 		if (r<0 || c<0) return 0;
 		if (r==0 && c==0) return (k == mat[r][c] ? 1:0);
 		
-		// (m,n) can be reached wither through (m-1, n) or (m, n-1) 
+		// (m,n) can be reached either through (m-1, n) or (m, n-1)
 		return pathCoins(mat, r-1, c, k-mat[r][c]) +
 				pathCoins(mat, r, c-1, k-mat[r][c]);
 	}
@@ -590,7 +847,7 @@ public class Matrix {
 	    R = arr.length;
 	    C = arr[0].length;
 		// If this is a invalid cell or if cell is a blocking cell
-	    if (isValid(i,j) == false || arr[i][j] == '#')
+	    if (!isValid(i,j) || arr[i][j] == '#')
 	        return 0;
 	 
 	    // Check if this cell contains the coin 'C' or if its empty 'E'.
@@ -613,12 +870,18 @@ public class Matrix {
 	    return (i >=0 && i < R && j >=0 && j < C);
 	}
 	
-	/* SubMatrix sum queries
+	*//*
+
+*/
+/* SubMatrix sum queries
 	 * tlr - top left row, tlc - top left column
 	 * rbr - right bottom row, rbc - right bottom column
 	 * This approach is good when we have only one sum query. If we have multiple sum queries then 
 	 * creating auxillary array makes more sense which is explained after this 
-	 */
+	 *//*
+*/
+/*
+
 	
 	public int subMatrix(int mat[][], int tlr, int tlc, int rbr, int rbc) {
 		
@@ -687,9 +950,15 @@ public class Matrix {
 	    return res;
 	}
 	
-	/* Construct tree from ancestor matrix
+	*//*
+
+*/
+/* Construct tree from ancestor matrix
 	 * 
-	 */
+	 *//*
+*/
+/*
+
 	
 	// Constructs tree from ancestor matrix
 	public TreeNode ancestorTree(int mat[][])
@@ -754,9 +1023,15 @@ public class Matrix {
 	    return root;
 	}
 	
-	/* shortest path in binary maze
+	*//*
+
+*/
+/* shortest path in binary maze
 	 * 
-	 */
+	 *//*
+*/
+/*
+
 	
 	// function to find the shortest path between
 	// a given source cell to a destination cell.
@@ -816,9 +1091,15 @@ public class Matrix {
 	    return Integer.MAX_VALUE;
 	}
 	
-	/* Given a Boolean Matrix, find k such that all elements in k’th row are 0 and k’th column are 1.
+	*//*
+
+*/
+/* Given a Boolean Matrix, find k such that all elements in kï¿½th row are 0 and kï¿½th column are 1.
 	 * http://www.geeksforgeeks.org/find-k-such-that-all-elements-in-kth-row-are-0-and-kth-column-are-1-in-a-boolean-matrix/
-	 */
+	 *//*
+*/
+/*
+
 	
 	public int find(int arr[][])
 	{
@@ -886,8 +1167,14 @@ public class Matrix {
 	    return res;
 	}
 	
-	/* Given an n x n square matrix, find sum of all sub-squares of size k x k
-	 */
+	*//*
+
+*/
+/* Given an n x n square matrix, find sum of all sub-squares of size k x k
+	 *//*
+*/
+/*
+
 	
 	// A O(n^2) function to find sum of all sub-squares of size k x k
 	// in a given square matrix of size n x n
@@ -938,11 +1225,17 @@ public class Matrix {
 	   }
 	}
 	
-	/* Find row with maximum 1's in it
+	*//*
+
+*/
+/* Find row with maximum 1's in it
 	 * Time complexity of this is O(mLogn)
 	 * Other way to do it is iterate through all rows and keep row number which has max 1's so far. 
 	 * Time complexity for that approach will be O(m*n)
-	 */
+	 *//*
+*/
+/*
+
 	
 	// The main function that returns index of row with maximum number of 1s. 
 	public int rowWithMax1s(int mat[][])
@@ -967,7 +1260,13 @@ public class Matrix {
 	    return max_row_index;
 	}
 	
-	/* A function to find the index of first index of 1 in a boolean array arr[] */
+	*//*
+
+*/
+/* A function to find the index of first index of 1 in a boolean array arr[] *//*
+*/
+/*
+
 	public int first(int arr[], int low, int high)
 	{
 	  if(high >= low)
@@ -989,7 +1288,13 @@ public class Matrix {
 	  return -1;
 	}
 	
-	/* Inplace rotation of square matrix by 90 degrees in anti clockwise direction*/
+	*//*
+
+*/
+/* Inplace rotation of square matrix by 90 degrees in anti clockwise direction*//*
+*/
+/*
+
 	public void rotateMatrixanticlockwise(int mat[][]){
 		
 		int N = mat.length;
@@ -1010,78 +1315,105 @@ public class Matrix {
 			}
 		}
 	}
-	
-	/* Rotate matrix in clockwise direction*/
-	
-	// A function to rotate a matrix mat[][] of size R x C.
-	// Initially, m = R and n = C
-	void rotateMatrixclockwise(int m, int n, int mat[][])
+
+	void rotateMatrixclockwise(int re, int ce, int mat[][])
 	{
-	    int row = 0, col = 0;
-	    int prev, curr;
-	 
-	    /*
-	       row - Staring row index
-	       m - ending row index
-	       col - starting column index
-	       n - ending column index
-	       i - iterator
-	    */
-	    while (row < m && col < n)
-	    {
-	 
-	        if (row + 1 == m || col + 1 == n)
-	            break;
-	 
-	        // Store the first element of next row, this
-	        // element will replace first element of current
-	        // row
-	        prev = mat[row + 1][col];
-	 
-	         /* Move elements of first row from the remaining rows */
-	        for (int i = col; i < n; i++)
-	        {
-	            curr = mat[row][i];
-	            mat[row][i] = prev;
-	            prev = curr;
-	        }
-	        row++;
-	 
-	        /* Move elements of last column from the remaining columns */
-	        for (int i = row; i < m; i++)
-	        {
-	            curr = mat[i][n-1];
-	            mat[i][n-1] = prev;
-	            prev = curr;
-	        }
-	        n--;
-	 
-	         /* Move elements of last row from the remaining rows */
-	        if (row < m)
-	        {
-	            for (int i = n-1; i >= col; i--)
-	            {
-	                curr = mat[m-1][i];
-	                mat[m-1][i] = prev;
-	                prev = curr;
-	            }
-	        }
-	        m--;
-	 
-	        /* Move elements of first column from the remaining rows */
-	        if (col < n)
-	        {
-	            for (int i = m-1; i >= row; i--)
-	            {
-	                curr = mat[i][col];
-	                mat[i][col] = prev;
-	                prev = curr;
-	            }
-	        }
-	        col++;
-	    }
-	 
-	    // Print rotated matrix
+		int rs = 0, cs = 0;
+		int prev, curr;
+
+    *//*
+
+*/
+/*
+       rs - Staring row index
+       re - ending row index
+       cs - starting column index
+       ce - ending column index
+       i - iterator
+    *//*
+*/
+/*
+
+		while (rs < re && cs < ce)
+		{
+
+			if (rs + 1 == re || cs + 1 == ce)
+				break;
+
+			// Store the first element of next row, this
+			// element will replace first element of current
+			// row
+			prev = mat[rs + 1][cs];
+
+			*//*
+
+*/
+/* Move elements of first row from the remaining rss *//*
+*/
+/*
+
+			for (int i = cs; i < ce; i++)
+			{
+				curr = mat[rs][i];
+				mat[rs][i] = prev;
+				prev = curr;
+			}
+			rs++;
+
+			*//*
+
+*/
+/* Move elements of last column from the remaining columns *//*
+*/
+/*
+
+			for (int i = rs; i < re; i++)
+			{
+				curr = mat[i][ce-1];
+				mat[i][ce-1] = prev;
+				prev = curr;
+			}
+			ce--;
+
+			*//*
+
+*/
+/* Move elements of last rs from the remaining rss *//*
+*/
+/*
+
+			if (rs < re)
+			{
+				for (int i = ce-1; i >= cs; i--)
+				{
+					curr = mat[re-1][i];
+					mat[re-1][i] = prev;
+					prev = curr;
+				}
+			}
+			re--;
+
+			*//*
+
+*/
+/* Move elements of first column from the remaining rss *//*
+*/
+/*
+
+			if (cs < ce)
+			{
+				for (int i = re-1; i >= rs; i--)
+				{
+					curr = mat[i][cs];
+					mat[i][cs] = prev;
+					prev = curr;
+				}
+			}
+			cs++;
+		}
+
+
+		// Print rotated matrix
 	    for (int i=0; i<R; i++)
 	    {
 	        for (int j=0; j<C; j++)
@@ -1091,3 +1423,7 @@ public class Matrix {
 	 
 	
 }
+*//*
+
+
+*/

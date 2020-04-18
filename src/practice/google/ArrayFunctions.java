@@ -488,7 +488,7 @@ public class ArrayFunctions {
      * 
      */
     
-    public static int[] largestRange(int[] array)
+    /*public static int[] largestRange(int[] array)
     {
         int[] range = { 0, -1 };
         HashSet<Integer> set = new HashSet<Integer>();
@@ -497,7 +497,7 @@ public class ArrayFunctions {
 
         while (set.size() > 0) // each element gets tested once.  Misses happen at most 2 times per entry (when there are no contiguous numbers) so the worst case is O(3n) for this part when largest range is length 1.
         {
-            int j = set..First();
+            int j = set.First();
             set.Remove(j);
             int a, b;
             // iterate backwards and forwards from j
@@ -520,9 +520,9 @@ public class ArrayFunctions {
             }
         }
         return range;
-    }
+    }*/
     
-    /* Eliminate all ‘b’ and ‘ac’ in an array of characters, you have to replace them in-place, 
+    /* Eliminate all ï¿½bï¿½ and ï¿½acï¿½ in an array of characters, you have to replace them in-place, 
      * and you are only allowed to iterate over the char array once. 
      * - we will use two pointer solution
      */
@@ -606,7 +606,7 @@ public class ArrayFunctions {
 	7 2 
 	2 6 
 	0 9 
-	—- 
+	ï¿½- 
 	12 21
 	
 	* in this case we need to handle situation array.length%nRows should be == 0.

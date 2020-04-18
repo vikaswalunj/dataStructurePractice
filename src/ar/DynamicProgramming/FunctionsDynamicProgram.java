@@ -221,8 +221,8 @@ public class FunctionsDynamicProgram {
     
     /* Minimum cost to fill given weight in bag
      * You are given a bag of size W kg and you are provided costs of packets different weights of oranges in array cost[] 
-     * where cost[i] is basically cost of ‘i’ kg packet of oranges. 
-     * Where cost[i] = -1 means that ‘i’ kg packet of orange is unavailable
+     * where cost[i] is basically cost of ï¿½iï¿½ kg packet of oranges. 
+     * Where cost[i] = -1 means that ï¿½iï¿½ kg packet of orange is unavailable
      */
     //cost[] - initial cost array, W - capacity of bacg
     public int minimumCost(int cost[], int n, int W){
@@ -296,27 +296,36 @@ public class FunctionsDynamicProgram {
   }
   
   /*
-   * find longest palindromic subsequence
-   * e.g. in string "BBABCBCAB" output = 7 because “BABCBAB” is longest palindrome
+   * find longest palindromic subsequence / substring
+   * time complexity - n^2
+   * expand around centers- total centers (2n -1) considering even number palindrome where space between letters is also
+   * considered as enter
+   *
    */
   // i - starting index and j - last index
-  public int longestPalindromeSeq(char [] seq, int i, int j) {
-	  
-	  //Base case 1: if there is only one character
-	  if (i == j)
-		  return 1;
-	  
-	  //Base case 2:if there are only 2 characters and both are same 
-	  if ((seq[i] == seq[j]) && (i+1 == j))
-		  return 2;
-	  
-	  //if first and last character match
-	  if (seq[i] == seq[j])
-		  return longestPalindromeSeq(seq, i+1, j-1) +2;
-	  
-	  //if first and last character do not match
-	  return max(longestPalindromeSeq(seq, i+1, j), longestPalindromeSeq(seq, i, j-1));
+  public String longestPalindrome(String s) {
+	  if (s == null || s.length() < 1) return "";
+	  int start = 0, end = 0;
+	  for (int i = 0; i < s.length(); i++) {
+		  int len1 = expandAroundCenter(s, i, i);   // odd number - abcba  - so 'c' is left and right
+		  int len2 = expandAroundCenter(s, i, i + 1); // even number - abba - so space 'b' is left and another 'b' is right
+		  int len = Math.max(len1, len2);
+		  if (len > end - start) {
+			  start = i - (len - 1) / 2;
+			  end = i + len / 2;
+		  }
+	  }
+	  return s.substring(start, end + 1);
   }
+
+	private int expandAroundCenter(String s, int left, int right) {
+		int L = left, R = right;
+		while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) {
+			L--;
+			R++;
+		}
+		return R - L - 1;
+	}
   
   /*
    * Cutting rod & prices e.g. for values given below max = 22 (price[2] = price[6])
@@ -399,6 +408,22 @@ public class FunctionsDynamicProgram {
 	  
 	  return max;
   }
+
+  /* maximum sum subarray
+ 		greedy approach - time complexity - O(N), space complexity - O(1)
+   */
+  public int maxSumSubArray(int[] nums) {
+	  int n = nums.length;
+	  int currSum = nums[0], maxSum = nums[0];
+
+	  for(int i = 1; i < n; ++i) {
+		  currSum = Math.max(nums[i], currSum + nums[i]);
+		  maxSum = Math.max(maxSum, currSum);
+	  }
+	  return maxSum;
+  }
+
+
   
   /*
    * Floyd Warshall algorithm - solving all pairs shortest path i.e. find shortest distance between 
@@ -450,8 +475,8 @@ public class FunctionsDynamicProgram {
   
   
   /* Palindrome partitioning - Given a string, a partitioning of the string is a palindrome partitioning if every substring of the partition is a palindrome. 
-   * For example, “aba|b|bbabb|a|b|aba” is a palindrome partitioning of “ababbbabbababa”. minimum 3 cuts are needed for “ababbbabbababa”. 
-   * The three cuts are “a|babbbab|b|ababa”.
+   * For example, ï¿½aba|b|bbabb|a|b|abaï¿½ is a palindrome partitioning of ï¿½ababbbabbababaï¿½. minimum 3 cuts are needed for ï¿½ababbbabbababaï¿½. 
+   * The three cuts are ï¿½a|babbbab|b|ababaï¿½.
    */
   
   //Returns the minimum number of cuts needed to partition a string
@@ -736,7 +761,7 @@ public class FunctionsDynamicProgram {
 	
 	/*Ugly Numbers
 	 * Ugly numbers are numbers whose only prime factors are 2, 3 or 5. The sequence 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15
-	 * Given a number n, the task is to find n’th Ugly number.
+	 * Given a number n, the task is to find nï¿½th Ugly number.
 	 * n=7, output = 8; n=10, output=12; n=15, output=24
 	 */
 	
@@ -1160,7 +1185,7 @@ public class FunctionsDynamicProgram {
 	
 	/* Longest Repeating Subsequence
 	 * Given a string, find length of the longest repeating subsequence such that 
-	 * the two subsequence don’t have same string character at same position,
+	 * the two subsequence donï¿½t have same string character at same position,
 	 */
 	
 	public int findLongestRepeatingSubSeq(String str)

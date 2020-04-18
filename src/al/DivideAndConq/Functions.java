@@ -168,7 +168,7 @@ public class Functions {
 	  }
 	 
 	  /*
-	   * 
+	   *
 	   */
 	  
 	// A recursive function to find the smallest distance. The array P contains
@@ -198,7 +198,7 @@ public class Functions {
 	    int j = 0;
 	    for (int i = 0; i < n; i++)
 	        if (Math.abs(P[i].x - midPoint.x) < d)
-	            strip[j] = P[i], j++;
+	            strip[j] = P[i]; j++;
 	 
 	    // Find the closest points in strip.  Return the minimum of d and closest
 	    // distance is strip[]

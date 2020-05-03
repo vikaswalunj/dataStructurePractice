@@ -22,7 +22,7 @@ public class flatNode {
     	
     }
     
-    class doubleNode {
+    static class doubleNode {
     	int data;
     	doubleNode next;
     	doubleNode prev;

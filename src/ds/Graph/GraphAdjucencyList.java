@@ -1,13 +1,17 @@
 package ds.Graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.Stack;
 
 import ds.Graph.Graph.Edge;
 import ds.Graph.Graph.UDEdge;
@@ -491,5 +495,306 @@ public class GraphAdjucencyList {
 		return false;
 		
 	}
-	 
+
+	//BFS
+
+	public GraphNode cloneGraphNew(GraphNode source) {
+
+		LinkedList<GraphNode> queue = new LinkedList<GraphNode>();
+		queue.add(source);
+
+		//put the node into map
+		HashMap<GraphNode, GraphNode> copyMap = new HashMap<GraphNode, GraphNode>();
+		copyMap.put(source, new GraphNode(source.val));
+
+		while (!queue.isEmpty()) {
+			//get front node in queue and visit its neighbours
+			GraphNode u = queue.poll();
+
+			GraphNode cloneNodeU = copyMap.get(u);
+			u.neighbours.forEach(n -> {
+				GraphNode cloneNodeG = copyMap.get(n);
+				if (cloneNodeG == null) {
+					queue.add(n);
+					cloneNodeG = new GraphNode(n.val);
+					copyMap.put(n, cloneNodeG);
+				}
+				cloneNodeU.neighbours.add(cloneNodeG);
+			});
+		}
+
+		return copyMap.get(source);
+	}
+
+	/* Given n nodes labeled from 0 to n-1 and a list of undirected edges
+	(each edge is a pair of nodes), write a function to check whether these edges make up a valid tree.
+	a graph, G, is a tree iff the following two conditions are met:
+
+	1.  G is fully connected. In other words, for every pair of nodes in G, there is a path between them.
+	2.	G contains no cycles. In other words, there is exactly one path between each pair of nodes in G.
+
+	DFS
+	1. G is fully connected if, and only if, we started a depth-first search from a single source
+		and discovered all nodes in G during it.
+	2. G contains no cycles if, and only if, the depth-first search never goes back to an already discovered node.
+		We need to be careful though not to count trivial cycles of the form A → B → A
+		that occur with most implementations of undirected edges.
+	 */
+
+	public boolean validTree(int n, int[][] edges) {
+		// Create a new list of lists.
+		List<List<Integer>> adjacencyList = new ArrayList<>();
+		// Initialise an empty list for each node.
+		for (int i = 0; i < n; i++) {
+			adjacencyList.add(new ArrayList<>());
+		}
+		// Go through the edge list, populating the adjacency list.
+		for (int[] edge : edges) {
+			adjacencyList.get(edge[0]).add(edge[1]);
+			adjacencyList.get(edge[1]).add(edge[0]);
+		}
+
+		// Use a map to keep track of how we got into each node.
+		//i.e. it keeps track of the "parent" node that we got to a node from
+		Map<Integer, Integer> parent = new HashMap<>();
+		parent.put(0, -1);
+		Stack<Integer> stack = new Stack<>();
+		stack.push(0);
+
+		// While there are nodes remaining on the stack...
+		while (!stack.isEmpty()) {
+			int node = stack.pop();  // Take one off to visit.
+			// Check for unseen neighbours of this node:
+			for (int neighbour : adjacencyList.get(node)) {
+				// Don't look at the trivial cycle.
+				if (parent.get(node) == neighbour) {
+					continue;
+				}
+				// Check if we've already seen this node.
+				if (parent.containsKey(neighbour)) {
+					return false;    // There must be a cycle.
+				}
+				// Otherwise, put this neighbour onto stack
+				// and record that it has been seen.
+				stack.push(neighbour);
+				parent.put(neighbour, node);
+			}
+		}
+
+		return parent.size() == n;
+	}
+
+
+	/* alien dictionary
+	3 steps
+	1. 	Extracting dependency rules from the input. For example "A must be before C", "X must be before D", or "E must be before B".
+	2. 	Putting the dependency rules into a graph with letters as nodes and dependencies as edges (an adjacency list is best).
+	3. 	Topologically sorting the graph nodes.
+	 */
+	public String alienOrder(String[] words) {
+
+		// Step 1: Create data structures and find all unique letters.
+		Map<Character, List<Character>> adjList = new HashMap<>();
+		Map<Character, Integer> counts = new HashMap<>();  //dependency metric. letter dependent on how many other letters
+		for (String word : words) {
+			for (char c : word.toCharArray()) {
+				counts.put(c, 0);
+				adjList.put(c, new ArrayList<>());
+			}
+		}
+
+		// Step 2: Find all edges.
+		for (int i = 0; i < words.length - 1; i++) {
+			String word1 = words[i];
+			String word2 = words[i + 1];
+			// Check that word2 is not a prefix of word1.
+			if (word1.length() > word2.length() && word1.startsWith(word2)) {
+				return "";
+			}
+			// Find the first non match and insert the corresponding relation.
+			for (int j = 0; j < Math.min(word1.length(), word2.length()); j++) {
+				if (word1.charAt(j) != word2.charAt(j)) {
+					adjList.get(word1.charAt(j)).add(word2.charAt(j));
+					counts.put(word2.charAt(j), counts.get(word2.charAt(j)) + 1);
+					break;
+				}
+			}
+		}
+
+		// Step 3: Breadth-first search.
+		StringBuilder sb = new StringBuilder();
+		Queue<Character> queue = new LinkedList<>();
+		for (Character c : counts.keySet()) {
+			if (counts.get(c).equals(0)) {
+				queue.add(c);
+			}
+		}
+		while (!queue.isEmpty()) {
+			Character c = queue.remove();
+			sb.append(c);
+			for (Character next : adjList.get(c)) {
+				counts.put(next, counts.get(next) - 1);
+				if (counts.get(next).equals(0)) {
+					queue.add(next);
+				}
+			}
+		}
+
+		if (sb.length() < counts.size()) {
+			return "";
+		}
+		return sb.toString();
+	}
+
+	/* Connected components
+	write a function to find the number of connected components in an undirected graph.
+	 */
+
+	public int countComponents(int n, int[][] edges) {
+		int res = 0;
+		// Create a new list of lists.
+		List<List<Integer>> adjacencyList = new ArrayList<>();
+		// Initialise an empty list for each node.
+		for (int i = 0; i < n; i++) {
+			adjacencyList.add(new ArrayList<>());
+		}
+		// Go through the edge list, populating the adjacency list.
+		for (int[] edge : edges) {
+			adjacencyList.get(edge[0]).add(edge[1]);
+			adjacencyList.get(edge[1]).add(edge[0]);
+		}
+		boolean[] visited = new boolean[n];
+		// because there are unconnected edges we need to use for loop vs Stack and while loop
+		for(int i=0; i<n; i++){
+			if(!visited[i]){
+				dfs(i, visited, adjacencyList);
+				res++;
+			}
+		}
+		return res;
+	}
+
+	public void dfs(int i, boolean[] visited, List<List<Integer>> adjacencyList) {
+		if(visited[i]) {
+			return;
+		}
+		visited[i] = true;
+		for(int edge : adjacencyList.get(i)) {
+			dfs(edge, visited, adjacencyList);
+		}
+	}
+
+
+	/* Reconstruct Itinerary
+		Input: [["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
+		Output: ["JFK", "MUC", "LHR", "SFO", "SJC"]
+	 */
+
+	public List<String> findItinerary(List<List<String>> tickets) {
+
+		// origin -> list of destinations
+		HashMap<String, LinkedList<String>> flightMap = new HashMap<>();
+		LinkedList<String> result = null;
+
+		// Step 1). build the graph first
+		for(List<String> ticket : tickets) {
+			String origin = ticket.get(0);
+			String dest = ticket.get(1);
+			if (flightMap.containsKey(origin)) {
+				LinkedList<String> destList = flightMap.get(origin);
+				destList.add(dest);
+			} else {
+				LinkedList<String> destList = new LinkedList<>();
+				destList.add(dest);
+				flightMap.put(origin, destList);
+			}
+		}
+
+		// Step 2). order the destinations
+		flightMap.forEach((key, value) -> Collections.sort(value));
+
+		result = new LinkedList<>();
+		// Step 3). post-order DFS
+		this.DFS("JFK", flightMap, result);
+		return result;
+	}
+
+	protected void DFS(String origin, HashMap<String, LinkedList<String>> flightMap, LinkedList<String> result) {
+		// Visit all the outgoing edges first.
+		if (flightMap.containsKey(origin)) {
+			LinkedList<String> destList = flightMap.get(origin);
+			while (!destList.isEmpty()) {
+				// while we visit the edge, we trim it off from graph.
+				String dest = destList.pollFirst();
+				DFS(dest, flightMap, result);
+			}
+		}
+		// add the airport to the head of the itinerary
+		result.offerFirst(origin);
+	}
+
+	/* calculate equations
+	Equations are given in the format A / B = k, where A and B are variables represented as strings,
+	and k is a real number (floating point number). Given some queries, return the answers.
+	If the answer does not exist, return -1.0.
+
+	Example:
+	Given a / b = 2.0, b / c = 3.0.
+	queries are: a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ? .
+	return [6.0, 0.5, -1.0, 1.0, -1.0 ].
+	 */
+	public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+		HashMap<String, Integer> map = new HashMap<>();
+		int index = 0;
+		for(int i = 0; i < values.length; i++) {
+			List<String> pair = equations.get(i);
+			if(!map.containsKey(pair.get(0))) {
+				map.put(pair.get(0), index++);
+			}
+
+			if(!map.containsKey(pair.get(1))) {
+				map.put(pair.get(1), index++);
+			}
+		}
+
+		int n = map.size();
+		Double[][] graph = new Double[n][n];
+		for(int i = 0; i < values.length; i++) {
+			List<String> pair = equations.get(i);
+			int a = map.get(pair.get(0)), b = map.get(pair.get(1));
+			graph[a][b] = values[i];
+			graph[b][a] = values[i] == 0 ? 0 : 1.0 / values[i];
+		}
+
+		for(int i = 0; i < n; i++) {
+			boolean[] visited = new boolean[n];
+			visited[i] = true;
+			graph[i][i] = 1.0;
+			dfs(i, i, 1.0, visited, graph);
+		}
+
+		double[] result = new double[queries.size()];
+		for(int i = 0; i < result.length; i++) {
+			List<String> q = queries.get(i);
+			String from = q.get(0), to = q.get(1);
+			if(map.containsKey(from) && map.containsKey(to) && graph[map.get(from)][map.get(to)] != null) {
+				result[i] = graph[map.get(from)][map.get(to)];
+			} else {
+				result[i] = -1;
+			}
+		}
+
+		return result;
+	}
+
+	private void dfs(int start, int cur, double curValue, boolean[] visited, Double[][] graph) {
+		for(int i = 0; i < visited.length; i++) {
+			if(visited[i]) continue;
+			if(graph[cur][i] != null) {
+				graph[start][i] = curValue * graph[cur][i];
+				visited[i] = true;
+				dfs(start, i, curValue * graph[cur][i], visited, graph);
+			}
+		}
+	}
 }

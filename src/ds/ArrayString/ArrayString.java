@@ -228,7 +228,7 @@ public class ArrayString {
 
         //create queue of word node where we can push matching words from dictionary
         LinkedList<WordNode> queue = new LinkedList<WordNode>();
-        WordNode wd = new WordNode(source, 0);
+        WordNode wd = new WordNode(source, 1);
         //push source word to queue
         queue.push(wd);
 
@@ -246,7 +246,7 @@ public class ArrayString {
             for (int i=0; i<arr.length ; i++){
 				/* replace each character in in word(arr) and check if formed word is in dictionary
 				   if it is in dictionary remove that from dictionary and add formed word to queue*/
-                for (char c='a'; c <'z'; c++) {
+                for (char c='a'; c <='z'; c++) {
                     //add current character to temp so that it can be replaced back later
                     char temp = arr[i];
                     arr[i] = c;

@@ -405,16 +405,15 @@ public class LinkedList {
  
         while(p != null){
             if(p.data < x){
-                p = p.next;
                 smallerThanX = smallerThanX.next;
             }else{
  
                 greaterThanX.next = p;
                 smallerThanX.next = p.next;
  
-                p = smallerThanX.next;
                 greaterThanX = greaterThanX.next;
-            } 
+            }
+            p = p.next;
         }
  
         // close the list
@@ -803,6 +802,50 @@ public class LinkedList {
 	        return result;
 	 
 	    }
+
+	    */
+	/* Sort linked list which is already sorted on absolute values
+
+
+
+	// To sort a linked list by actual values.
+    // The list is assumed to be sorted by absolute
+    // values.
+    */
+	public Node sortedList(Node head)
+	{
+	    // Initialize previous and current nodes
+	    Node prev = head;
+	    Node curr = head.next;
+
+	    // Traverse list
+	    while(curr != null)
+	    {
+	        // If curr is smaller than prev, then
+	                    // it must be moved to head
+	        if(curr.data < prev.data)
+	        {
+	            // Detach curr from linked list
+	            prev.next = curr.next;
+
+	            // Move current node to beginning
+	            curr.next = head;
+	            head = curr;
+
+	            // Update current
+	            curr = prev;
+	        }
+
+	        // Nothing to do if current element
+	                    // is at right place
+	        else
+	        prev = curr;
+
+	        // Move current
+	        curr = curr.next;
+	    }
+	    return head;
+	}
 	 
 	    /* Rotate a Linked List 
 	     * 10->20->30->40->50->60 k = 4; 50->60->10->20->30->40
